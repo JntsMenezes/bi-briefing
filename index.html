@@ -4632,6 +4632,11 @@ body.dark .v7-prio.med { background: oklch(0.30 0.07 75); color: oklch(0.78 0.10
   padding-bottom: 6rem;
   max-width: none;
 }
+/* .main keeps its comfortable reading width, but now centers itself
+   within the wider app-shell content area instead of hugging the left edge */
+.v7-screen-briefing .main {
+  margin: 0 auto;
+}
 /* Hide v6's own top-bar inside the shell; the shell topbar handles it */
 .v7-screen-briefing .top-bar { display: none; }
 .v7-screen-briefing .shell {
