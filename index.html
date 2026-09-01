@@ -2134,7 +2134,7 @@ body.dark .eu-pill.eu-high { background: oklch(0.25 0.06 25); color: oklch(0.85 
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 3.5rem;
-  align-items: end;
+  align-items: start;
 }
 .v6-eyebrow-row {
   display: inline-flex;
@@ -3050,13 +3050,10 @@ body:not(.briefing-started) .shell {
 }
 /* Top-bar stays full width — already grid-column: 1 / -1 */
 
-/* Hero becomes a full-viewport landing — no scroll needed to reach CTA */
+/* Hero sits at its natural height inside the app shell (no forced full-viewport centering) */
 body:not(.briefing-started) .v6-hero {
-  min-height: calc(100vh - 180px); /* leave room for top-bar + comfortable padding */
-  display: flex;
-  align-items: center;
   margin: 0 0 2rem;
-  padding: 1.5rem 0;
+  padding: 1.5rem 0 2.5rem;
 }
 body:not(.briefing-started) .v6-hero-grid {
   width: 100%;
@@ -3112,12 +3109,6 @@ body.briefing-started .v6-rail-home { display: inline-flex; }
 .brand-mark.v6-clickable { cursor: pointer; transition: opacity .15s; }
 .brand-mark.v6-clickable:hover { opacity: .72; }
 
-/* Mobile: collapse landing hero further */
-@media (max-width: 640px) {
-  body:not(.briefing-started) .v6-hero {
-    min-height: calc(100vh - 140px);
-  }
-}
 </style>
 <style>/* ══════════════════════════════════════
    BI Briefing v7 — SaaS Shell
