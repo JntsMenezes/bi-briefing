@@ -4815,7 +4815,7 @@ body.dark .v7-screen-briefing {
   <!-- SIDEBAR -->
   <aside class="v7-sb">
     <div class="v7-sb-head">
-      <a class="v7-sb-brand" href="javascript:void(0)" onclick="v7Go('dashboard')">
+      <a class="v7-sb-brand" href="javascript:void(0)" onclick="v7Go('briefing')">
         <span class="v7-sb-brand-mark">B</span>
         <span class="v7-sb-brand-text">BI Briefing</span>
       </a>
@@ -4834,34 +4834,9 @@ body.dark .v7-screen-briefing {
 
     <nav class="v7-sb-nav">
       <div class="v7-sb-section" data-v7i18n="sb-section-main">Workspace</div>
-      <button class="v7-sb-link active" type="button" data-target="dashboard" onclick="v7Go('dashboard')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-dashboard">Dashboard</span>
-      </button>
-      <button class="v7-sb-link" type="button" data-target="demands" onclick="v7Go('demands')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><circle cx="4" cy="6" r="1.5"></circle><circle cx="4" cy="12" r="1.5"></circle><circle cx="4" cy="18" r="1.5"></circle></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-demands">Demandas</span>
-        <span class="v7-sb-badge">12</span>
-      </button>
-      <button class="v7-sb-link" type="button" data-target="briefing" onclick="v7Go('briefing')">
+      <button class="v7-sb-link active" type="button" data-target="briefing" onclick="v7Go('briefing')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         <span class="v7-sb-link-text" data-v7i18n="sb-briefing">Novo briefing</span>
-      </button>
-
-      <div class="v7-sb-section" data-v7i18n="sb-section-ops">Operação</div>
-      <button class="v7-sb-link" type="button" data-target="analytics" onclick="v7Go('analytics')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line><line x1="3" y1="20" x2="21" y2="20"></line></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-analytics">Analytics</span>
-      </button>
-      <button class="v7-sb-link" type="button" data-target="workspace" onclick="v7Go('workspace')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-workspace">Workspace</span>
-      </button>
-
-      <div class="v7-sb-section" data-v7i18n="sb-section-org">Organização</div>
-      <button class="v7-sb-link" type="button" data-target="settings" onclick="v7Go('settings')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-settings">Configurações</span>
       </button>
     </nav>
 
@@ -4940,7 +4915,7 @@ body.dark .v7-screen-briefing {
     </header>
 
     <!-- DASHBOARD SCREEN -->
-    <section class="v7-screen active" data-screen="dashboard" data-screen-label="01 Dashboard"></section>
+    <section class="v7-screen" data-screen="dashboard" data-screen-label="01 Dashboard"></section>
 
     <!-- DEMANDS SCREEN -->
     <section class="v7-screen" data-screen="demands" data-screen-label="02 Demands"></section>
@@ -4951,7 +4926,7 @@ body.dark .v7-screen-briefing {
     <section class="v7-screen" data-screen="settings" data-screen-label="06 Settings"></section>
 
     <!-- BRIEFING SCREEN (wraps existing v6 form intact) -->
-    <section class="v7-screen v7-screen-briefing" data-screen="briefing" data-screen-label="03 Briefing">
+    <section class="v7-screen v7-screen-briefing active" data-screen="briefing" data-screen-label="03 Briefing">
 
 <div class="page">
   <div class="shell">
@@ -9388,7 +9363,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     document.querySelector('.v7-main')?.scrollTo({ top:0, behavior:'instant' });
   }
   window.v7Go = go;
-  window.v6BackToHome = function() { go('dashboard'); };
+  window.v6BackToHome = function() { go('briefing'); };
 
   /* ─── LOGIN ─── */
   function showLogin() {
@@ -10022,34 +9997,6 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         ov.addEventListener('click', () => shell.classList.remove('mobile-open'));
         shell.appendChild(ov);
       }
-      // Mobile bottom nav bar
-      if (!document.getElementById('v7-mob-nav')) {
-        const nav = document.createElement('nav');
-        nav.id = 'v7-mob-nav';
-        nav.className = 'v7-mob-nav';
-        const items = [
-          { screen:'dashboard', icon:V7_ICON.chart,    key:'sb-dashboard' },
-          { screen:'demands',   icon:V7_ICON.list,     key:'sb-demands'   },
-          { screen:'briefing',  icon:V7_ICON.plus,     key:'sb-briefing'  },
-          { screen:'analytics', icon:V7_ICON.activity, key:'sb-analytics' },
-        ];
-        nav.innerHTML = items.map(it =>
-          `<button class="v7-mob-nav-btn" data-mobt="${it.screen}" type="button">` +
-          `<span class="v7-mob-nav-icon">${it.icon}</span>` +
-          `<span class="v7-mob-nav-label">${tt(it.key)}</span>` +
-          `</button>`
-        ).join('');
-        nav.querySelectorAll('.v7-mob-nav-btn').forEach(btn => {
-          btn.addEventListener('click', () => window.v7Go(btn.dataset.mobt));
-        });
-        document.body.appendChild(nav);
-        // Sync helper
-        window._v7MobNavSync = function(screen) {
-          nav.querySelectorAll('.v7-mob-nav-btn').forEach(b =>
-            b.classList.toggle('active', b.dataset.mobt === screen));
-        };
-        window._v7MobNavSync(V7.screen || 'dashboard');
-      }
       // Swipe-left to close sidebar
       let _tx = 0;
       document.addEventListener('touchstart', e => { _tx = e.touches[0].clientX; }, { passive:true });
@@ -10072,8 +10019,8 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     renderSoon('workspace');
     renderSoon('settings');
 
-    // Always start at dashboard but show login first (never skip for demo product)
-    go('dashboard');
+    // Always start at briefing but show login first (never skip for demo product)
+    go('briefing');
 
     // Login form submit
     $('#v7-login-form')?.addEventListener('submit', e => {
