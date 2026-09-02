@@ -4445,6 +4445,9 @@ body.dark .v7-prio.med { background: oklch(0.30 0.07 75); color: oklch(0.78 0.10
   cursor: pointer;
   transition: background .15s;
 }
+.v7-table-row.resp-row {
+  grid-template-columns: minmax(0, 2fr) 160px 90px 160px;
+}
 .v7-table-row:first-child { border-top: 0; }
 .v7-table-row > * { min-width: 0; }
 .v7-table-row .v7-badge,
@@ -4806,29 +4809,15 @@ body.dark .v7-screen-briefing {
   </div>
   <div class="v7-login-form">
     <form id="v7-login-form" class="v7-login-card">
-      <h2 data-v7i18n="lg-welcome">Entrar na plataforma</h2>
-      <p class="v7-login-sub" data-v7i18n="lg-welcome-sub">Acesse com sua conta corporativa para continuar.</p>
+      <h2 data-v7i18n="lg-welcome">Antes de começar</h2>
+      <p class="v7-login-sub" data-v7i18n="lg-welcome-sub">Seu acesso já foi confirmado pela sua conta. Só precisamos saber como te identificar nas respostas.</p>
 
-      <button type="button" class="v7-oauth-btn" onclick="v7Login()">
-        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"></path><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"></path><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"></path><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"></path></svg>
-        <span data-v7i18n="lg-google">Continuar com Google</span>
-      </button>
-      <button type="button" class="v7-oauth-btn" onclick="v7Login()">
-        <svg viewBox="0 0 24 24"><rect x="1" y="1" width="10" height="10" fill="#f25022"></rect><rect x="13" y="1" width="10" height="10" fill="#7fba00"></rect><rect x="1" y="13" width="10" height="10" fill="#00a4ef"></rect><rect x="13" y="13" width="10" height="10" fill="#ffb900"></rect></svg>
-        <span data-v7i18n="lg-ms">Continuar com Microsoft</span>
-      </button>
+      <label data-v7i18n="lg-name">Seu nome</label>
+      <input type="text" id="lgName" autocomplete="name" placeholder="Ex: Jonatas Menezes" required>
 
-      <div class="v7-login-sep" data-v7i18n="lg-or">ou com e-mail corporativo</div>
+      <button type="submit" class="v7-login-submit" data-v7i18n="lg-submit">Continuar</button>
 
-      <label data-v7i18n="lg-email">E-mail corporativo</label>
-      <input type="email" autocomplete="email" placeholder="voce@empresa.com" value="jonatas@promofarma.com.br">
-
-      <label data-v7i18n="lg-password">Senha</label>
-      <input type="password" autocomplete="current-password" placeholder="••••••••••" value="demo">
-
-      <button type="submit" class="v7-login-submit" data-v7i18n="lg-submit">Entrar</button>
-
-      <div class="v7-login-meta" data-v7i18n="lg-meta">Ao entrar, você aceita os Termos e a Política de Privacidade.</div>
+      <div class="v7-login-meta" data-v7i18n="lg-meta">Esse nome fica salvo neste dispositivo e é usado para identificar o que você enviar.</div>
     </form>
   </div>
 </div>
@@ -4850,19 +4839,16 @@ body.dark .v7-screen-briefing {
       </button>
     </div>
 
-    <div class="v7-sb-org">
-      <div class="v7-sb-org-avatar">PF</div>
-      <div class="v7-sb-org-info">
-        <div class="v7-sb-org-name" data-v7i18n="sb-org-name">PromoFarma BR</div>
-        <div class="v7-sb-org-role" data-v7i18n="sb-org-role">Workspace · Pro</div>
-      </div>
-    </div>
-
     <nav class="v7-sb-nav">
       <div class="v7-sb-section" data-v7i18n="sb-section-main">Workspace</div>
       <button class="v7-sb-link active" type="button" data-target="briefing" onclick="v7Go('briefing')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         <span class="v7-sb-link-text" data-v7i18n="sb-briefing">Novo briefing</span>
+      </button>
+      <button class="v7-sb-link" type="button" data-target="respostas" onclick="v7Go('respostas')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="v7-sb-link-text" data-v7i18n="sb-respostas">Respostas recebidas</span>
+        <span class="v7-sb-badge" id="respostasBadge" hidden>0</span>
       </button>
     </nav>
 
@@ -4886,7 +4872,6 @@ body.dark .v7-screen-briefing {
         </button>
         <div class="v7-crumb">
           <span id="v7-crumb-name">Dashboard</span>
-          <span class="v7-crumb-meta">PromoFarma BR</span>
         </div>
         <div class="v7-topbar-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -4950,6 +4935,9 @@ body.dark .v7-screen-briefing {
     <section class="v7-screen" data-screen="analytics" data-screen-label="04 Analytics"></section>
     <section class="v7-screen" data-screen="workspace" data-screen-label="05 Workspace"></section>
     <section class="v7-screen" data-screen="settings" data-screen-label="06 Settings"></section>
+
+    <!-- RESPOSTAS SCREEN (submissions received via the db capability) -->
+    <section class="v7-screen" data-screen="respostas" data-screen-label="02 Respostas"></section>
 
     <!-- BRIEFING SCREEN (wraps existing v6 form intact) -->
     <section class="v7-screen v7-screen-briefing active" data-screen="briefing" data-screen-label="03 Briefing">
@@ -5732,6 +5720,7 @@ Custo de perda..."></textarea>
           <div class="result-card" id="result-card"></div>
 
           <div class="action-btns">
+            <button class="copy-btn" id="sendBtn" onclick="enviarResposta()" type="button">📨 <span data-i18n="send-btn">Enviar resposta</span></button>
             <button class="copy-btn" id="pdfBtn" onclick="gerarPDF()" type="button">⬇ <span data-i18n="pdf-btn">Baixar PDF</span></button>
           </div>
         </div>
@@ -5927,6 +5916,8 @@ const i18n = {
     generate:'Gerar Resumo →',
     'summary-title':'Resumo do Briefing', 'copy-btn':'Copiar como texto', 'pdf-btn':'Baixar PDF', 'mail-btn':'Enviar por e-mail',
     'mail-opt-app':'Abrir no app de e-mail', 'mail-opt-gmail':'Abrir no Gmail', 'mail-opt-outlook':'Abrir no Outlook',
+    'send-btn':'Enviar resposta', 'send-sending':'Enviando...', 'send-ok':'Resposta enviada ✓', 'send-fail':'Falha ao enviar. Tente novamente.',
+    'resp-unavailable':'Envio só funciona abrindo este app pelo link do Claude (não nesta cópia).',
     'jira-btn':'Formato Jira', 'md-btn':'Markdown / Notion',
     copied:'Copiado',
     'reset-confirm':'Apagar tudo e começar do zero?',
@@ -6070,6 +6061,8 @@ const i18n = {
     generate:'Generate Summary →',
     'summary-title':'Briefing Summary', 'copy-btn':'Copy as text', 'pdf-btn':'Download PDF', 'mail-btn':'Send by email',
     'mail-opt-app':'Open in email app', 'mail-opt-gmail':'Open in Gmail', 'mail-opt-outlook':'Open in Outlook',
+    'send-btn':'Send response', 'send-sending':'Sending...', 'send-ok':'Response sent ✓', 'send-fail':'Failed to send. Try again.',
+    'resp-unavailable':'Sending only works when opening this app via the Claude link (not this copy).',
     'jira-btn':'Jira format', 'md-btn':'Markdown / Notion',
     copied:'Copied',
     'reset-confirm':'Erase everything and start fresh?',
@@ -7924,6 +7917,74 @@ function copyToClipboard(text, btn) {
   });
 }
 
+async function enviarResposta() {
+  const btn = document.getElementById('sendBtn');
+  const t = i18n[lang];
+  const db = window.v7GetDb ? await window.v7GetDb() : null;
+  if (!db) {
+    showToast(t['resp-unavailable'] || 'Indisponível nesta cópia.', 4200);
+    return;
+  }
+
+  const origHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '⏳ ' + (t['send-sending'] || 'Enviando...');
+
+  captureFullState();
+  estimateEffortUsage();
+  updateReadinessUI();
+  buildWireframe();
+
+  const rootCS = getComputedStyle(document.documentElement);
+  const cBorder = (rootCS.getPropertyValue('--border') || '#e6dfd0').trim();
+  const cAccent = (rootCS.getPropertyValue('--accent') || '#c2410c').trim();
+  const cTextStrong = (rootCS.getPropertyValue('--text-strong') || '#0a0908').trim();
+  const cMuted = (rootCS.getPropertyValue('--muted') || '#7d766a').trim();
+  const readinessCircleEl = document.getElementById('readinessCircle');
+  const readinessSvg = readinessCircleEl ? readinessCircleEl.innerHTML
+    .replace(/var\(--border\)/g, cBorder)
+    .replace(/var\(--accent\)/g, cAccent)
+    .replace(/var\(--text-strong\)/g, cTextStrong)
+    .replace(/var\(--muted\)/g, cMuted)
+    .replace(/var\(--font-display\)/g, "'Instrument Serif',serif")
+    .replace(/var\(--font-mono\)/g, "'JetBrains Mono',monospace")
+    : '';
+  const wireframeSvg = document.getElementById('wireframeContainer')?.innerHTML || '';
+
+  let submitterName = '';
+  try { submitterName = localStorage.getItem('biV7_userName') || ''; } catch (_) {}
+
+  const payload = {
+    submittedAt: Date.now(),
+    submitterName: submitterName || state.nome || '—',
+    lang,
+    nome: state.nome || '', nomeDash: state.nomeDash || '', audiencia: state.audiencia || '',
+    freq: state.freq || '', stakeholders: state.stakeholders || '', biExistente: state.biExistente || '',
+    story: state.story || '', decisao: state.decisao || '', ancora: state.ancora || '',
+    resolveHoje: state.resolveHoje || '', referencia: state.referencia || '', fonte: state.fonte || '',
+    excelInfo: state.excelInfo || '', metricas: state.metricas || '', dimensoes: state.dimensoes || '',
+    visuals: state.visuals || '', corHex: state.corHex || '', modoBI: state.modoBI || '',
+    acesso: state.acesso || '', urgencia: state.urgencia || '', naoObjetivos: state.naoObjetivos || '',
+    obs: state.obs || '', readinessScore: state.readinessScore || 0, effortLabel: state.effortLabel || '',
+    usageLabel: state.usageLabel || '',
+    paleta: currentPalette.length ? [0, 2, 4, 6, 8, 10].map(i => currentPalette[i]) : [],
+    readinessSvg, wireframeSvg,
+  };
+
+  try {
+    await db.collection('submissions').add(payload);
+    btn.innerHTML = '✓ ' + (t['send-ok'] || 'Enviado');
+    showToast(t['send-ok'] || 'Resposta enviada ✓');
+  } catch (e) {
+    btn.innerHTML = origHTML;
+    btn.disabled = false;
+    showToast(t['send-fail'] || 'Falha ao enviar.', 4200);
+    return;
+  }
+  setTimeout(() => { btn.innerHTML = origHTML; btn.disabled = false; }, 4000);
+}
+window.enviarResposta = enviarResposta;
+
 function gerarPDF() {
   const btn = document.getElementById('pdfBtn');
   const origHTML = btn.innerHTML;
@@ -9013,11 +9074,21 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Demandas',
       'sb-briefing': 'Novo briefing',
+      'sb-respostas': 'Respostas recebidas',
+      'resp-empty-title': 'Nenhuma resposta ainda',
+      'resp-empty-sub': 'Envie o link deste app para alguém preencher. As respostas aparecem aqui, só para você.',
+      'resp-empty-guest': 'Você não tem acesso às respostas recebidas — só quem criou este workspace pode vê-las.',
+      'resp-loading': 'Carregando respostas...',
+      'resp-unavailable': 'Envio e recebimento de respostas só funcionam abrindo este app pelo link do Claude (não nesta cópia).',
+      'send-btn': 'Enviar resposta',
+      'send-sending': 'Enviando...',
+      'send-ok': 'Resposta enviada ✓',
+      'send-fail': 'Falha ao enviar. Tente novamente.',
+      'resp-view': 'Ver detalhes',
+      'resp-back': 'Voltar para a lista',
       'sb-analytics': 'Analytics',
       'sb-workspace': 'Workspace',
       'sb-settings': 'Configurações',
-      'sb-org-name': 'PromoFarma BR',
-      'sb-org-role': 'Workspace · Pro',
       // Topbar
       'tb-search': 'Buscar demandas, áreas, pessoas...',
       'tb-new': 'Novo briefing',
@@ -9096,11 +9167,21 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Requests',
       'sb-briefing': 'New briefing',
+      'sb-respostas': 'Received responses',
+      'resp-empty-title': 'No responses yet',
+      'resp-empty-sub': 'Send this app\'s link to someone to fill it out. Responses show up here, visible only to you.',
+      'resp-empty-guest': 'You don\'t have access to received responses — only this workspace\'s creator can see them.',
+      'resp-loading': 'Loading responses...',
+      'resp-unavailable': 'Sending and receiving responses only works when opening this app via the Claude link (not this copy).',
+      'send-btn': 'Send response',
+      'send-sending': 'Sending...',
+      'send-ok': 'Response sent ✓',
+      'send-fail': 'Failed to send. Try again.',
+      'resp-view': 'View details',
+      'resp-back': 'Back to list',
       'sb-analytics': 'Analytics',
       'sb-workspace': 'Workspace',
       'sb-settings': 'Settings',
-      'sb-org-name': 'PromoFarma BR',
-      'sb-org-role': 'Workspace · Pro',
       'tb-search': 'Search requests, areas, people...',
       'tb-new': 'New briefing',
       'dash-eyebrow': 'Overview · Updated just now',
@@ -9172,11 +9253,21 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Panel',
       'sb-demands': 'Solicitudes',
       'sb-briefing': 'Nuevo briefing',
+      'sb-respostas': 'Respuestas recibidas',
+      'resp-empty-title': 'Ninguna respuesta todavía',
+      'resp-empty-sub': 'Envía el enlace de esta app para que alguien la complete. Las respuestas aparecen aquí, solo para ti.',
+      'resp-empty-guest': 'No tienes acceso a las respuestas recibidas.',
+      'resp-loading': 'Cargando respuestas...',
+      'resp-unavailable': 'Enviar y recibir respuestas solo funciona abriendo esta app por el enlace de Claude.',
+      'send-btn': 'Enviar respuesta',
+      'send-sending': 'Enviando...',
+      'send-ok': 'Respuesta enviada ✓',
+      'send-fail': 'Error al enviar. Intenta de nuevo.',
+      'resp-view': 'Ver detalles',
+      'resp-back': 'Volver a la lista',
       'sb-analytics': 'Analítica',
       'sb-workspace': 'Workspace',
       'sb-settings': 'Configuración',
-      'sb-org-name': 'PromoFarma BR',
-      'sb-org-role': 'Workspace · Pro',
       'tb-search': 'Buscar solicitudes, áreas, personas...',
       'tb-new': 'Nuevo briefing',
       'dash-eyebrow': 'Resumen · Actualizado ahora',
@@ -9248,11 +9339,21 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': '仪表板',
       'sb-demands': '需求',
       'sb-briefing': '新建需求',
+      'sb-respostas': '收到的回复',
+      'resp-empty-title': '暂无回复',
+      'resp-empty-sub': '把这个应用的链接发给别人填写。回复会显示在这里，只有你能看到。',
+      'resp-empty-guest': '你无法查看收到的回复。',
+      'resp-loading': '正在加载回复...',
+      'resp-unavailable': '发送和接收回复只能通过 Claude 链接打开此应用时使用。',
+      'send-btn': '发送回复',
+      'send-sending': '发送中...',
+      'send-ok': '回复已发送 ✓',
+      'send-fail': '发送失败，请重试。',
+      'resp-view': '查看详情',
+      'resp-back': '返回列表',
       'sb-analytics': '分析',
       'sb-workspace': '工作区',
       'sb-settings': '设置',
-      'sb-org-name': 'PromoFarma BR',
-      'sb-org-role': '工作区 · Pro',
       'tb-search': '搜索需求、团队、人员...',
       'tb-new': '新建需求',
       'dash-eyebrow': '总览 · 刚刚更新',
@@ -9411,6 +9512,22 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
+  /* ─── CLOUD (db capability) ───
+     Only resolves when this page is actually served as a Claude Artifact.
+     A saved file, another host (GitHub Pages), or a viewer without the
+     capability all get null here — every caller must handle that. */
+  let DB = null;
+  let dbReady = (async () => {
+    try {
+      if (typeof window.claude === 'undefined' || typeof window.claude.use !== 'function') return null;
+      DB = await window.claude.use('db');
+    } catch (_) { DB = null; }
+    return DB;
+  })();
+  // Bridge for the briefing-form scripts (a separate IIFE) to reach the
+  // db capability without duplicating the claude.use() bootstrap.
+  window.v7GetDb = async function() { await dbReady; return DB; };
+
   // Translation helper for shell strings
   function tt(key) {
     if (!window.V7_I18N) return key;
@@ -9448,6 +9565,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     $('.v7-shell')?.classList.remove('mobile-open');
     // Sync mobile bottom nav active state
     if (typeof window._v7MobNavSync === 'function') window._v7MobNavSync(screen);
+    if (screen === 'respostas') {
+      renderRespostas();
+    }
     // If briefing screen, trigger its v6 init reveal animations gracefully
     if (screen === 'briefing') {
       // FIX-HERO: always show hero landing when entering briefing from v7 nav
@@ -9977,6 +10097,129 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     return name.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase();
   }
 
+  /* ─── RENDER: RESPOSTAS (submissions received via the db capability) ─── */
+  let RESPOSTAS = [];
+  let respostasUnsub = null;
+
+  function fmtDate(ts) {
+    try { return new Date(ts).toLocaleString(V7.lang === 'pt' ? 'pt-BR' : V7.lang === 'es' ? 'es-ES' : V7.lang === 'zh' ? 'zh-CN' : 'en-US'); }
+    catch (_) { return ''; }
+  }
+
+  async function renderRespostas() {
+    const root = $('[data-screen="respostas"]');
+    if (!root) return;
+
+    root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
+
+    const db = await (window.v7GetDb ? window.v7GetDb() : Promise.resolve(null));
+    if (!db) {
+      root.innerHTML = `
+        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div></div>
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>${tt('resp-unavailable')}</h4></div>
+        </div>`;
+      return;
+    }
+
+    if (respostasUnsub) { respostasUnsub(); respostasUnsub = null; }
+    respostasUnsub = db.collection('submissions').orderBy('submittedAt', 'desc').limit(200).onSnapshot(
+      (snap) => {
+        RESPOSTAS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        const badge = $('#respostasBadge');
+        if (badge) {
+          badge.hidden = RESPOSTAS.length === 0;
+          badge.textContent = RESPOSTAS.length;
+        }
+        if ($('#respostas-detail-view')) return; // don't clobber an open detail
+        paintRespostasList(root);
+      },
+      () => { paintRespostasList(root); }
+    );
+  }
+
+  function paintRespostasList(root) {
+    root = root || $('[data-screen="respostas"]');
+    if (!root) return;
+
+    if (!RESPOSTAS.length) {
+      root.innerHTML = `
+        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div></div>
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>${tt('resp-empty-title')}</h4><p>${tt('resp-empty-sub')}</p></div>
+        </div>`;
+      return;
+    }
+
+    const rows = RESPOSTAS.map(r => `
+      <div class="v7-table-row resp-row" onclick="v7ShowResposta('${r.id}')">
+        <div>
+          <div class="v7-table-title">${escapeXML(r.nomeDash || '—')}</div>
+          <div class="v7-table-id">${escapeXML(r.decisao || '').slice(0, 60)}</div>
+        </div>
+        <div class="v7-owner v7-hide-md">
+          <div class="v7-owner-avatar">${initials(r.submitterName || '—')}</div>
+          <span class="v7-table-cell">${escapeXML((r.submitterName || '—').split(' ')[0])}</span>
+        </div>
+        <div>${scoreChip(r.readinessScore || 0)}</div>
+        <div class="v7-table-cell muted v7-hide-md">${fmtDate(r.submittedAt)}</div>
+      </div>
+    `).join('');
+
+    root.innerHTML = `
+      <div class="v7-screen-head">
+        <div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div>
+      </div>
+      <div class="v7-table">
+        <div class="v7-table-row resp-row head">
+          <div>${tt('sb-briefing')}</div><div class="v7-hide-md">${V7.lang === 'pt' ? 'De' : 'From'}</div><div>Score</div><div class="v7-hide-md">${V7.lang === 'pt' ? 'Data' : 'Date'}</div>
+        </div>
+        ${rows}
+      </div>`;
+  }
+
+  const RESP_LABELS = {
+    pt: { nome:'Solicitante', nomeDash:'Nome do BI', audiencia:'Audiência', freq:'Frequência', decisao:'Decisão que move', fonte:'Fonte dos dados', metricas:'Métricas', dimensoes:'Filtros / Dimensões', visuals:'Visuais', corHex:'Cor primária', modoBI:'Modo preferido', urgencia:'Urgência', obs:'Observações' },
+    en: { nome:'Requester', nomeDash:'BI name', audiencia:'Audience', freq:'Frequency', decisao:'Decision it drives', fonte:'Data source', metricas:'Metrics', dimensoes:'Filters / Dimensions', visuals:'Visuals', corHex:'Primary color', modoBI:'Preferred mode', urgencia:'Urgency', obs:'Notes' },
+  };
+  function respLabels() { return RESP_LABELS[V7.lang] || RESP_LABELS.en; }
+
+  window.v7ShowResposta = function(id) {
+    const r = RESPOSTAS.find(x => x.id === id);
+    const root = $('[data-screen="respostas"]');
+    if (!r || !root) return;
+    const L = respLabels();
+    const fields = ['nome','nomeDash','audiencia','freq','decisao','fonte','metricas','dimensoes','visuals','corHex','modoBI','urgencia','obs'];
+    const tableRows = fields.map(k => `<div class="v7-table-row"><div class="v7-table-cell muted">${L[k]}</div><div class="v7-table-cell">${escapeXML(String(r[k] || '—')).replace(/\n/g,'<br>')}</div></div>`).join('');
+    const paletteHtml = (r.paleta || []).map(c => `<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${c};margin-right:4px;vertical-align:middle;border:1px solid var(--border)"></span>`).join('');
+
+    root.innerHTML = `
+      <div id="respostas-detail-view">
+        <div class="v7-screen-head">
+          <div>
+            <button class="v7-btn v7-btn-secondary" onclick="v7BackToRespostas()">${V7_ICON.chevL}<span>${tt('resp-back')}</span></button>
+            <h1 class="v7-screen-title" style="margin-top:.6rem">${escapeXML(r.nomeDash || '—')}</h1>
+            <div class="v7-screen-sub">${escapeXML(r.submitterName||'—')} · ${fmtDate(r.submittedAt)}</div>
+          </div>
+        </div>
+        <div class="v7-card" style="padding:1.4rem; margin-bottom:1rem; display:flex; align-items:center; gap:24px;">
+          ${r.readinessSvg || ''}
+          <div>Score: <strong>${r.readinessScore||0}/100</strong> · ${escapeXML(r.effortLabel||'—')} · ${escapeXML(r.usageLabel||'—')}</div>
+        </div>
+        ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
+        <div class="v7-card" style="padding:.4rem 1.2rem;">
+          <div class="v7-table-row"><div class="v7-table-cell muted">${V7.lang==='pt'?'Paleta':'Palette'}</div><div class="v7-table-cell">${paletteHtml||'—'}</div></div>
+          ${tableRows}
+        </div>
+      </div>`;
+  };
+
+  window.v7BackToRespostas = function() { paintRespostasList(); };
+
+  function escapeXML(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
   /* ─── RENDER: empty screens ─── */
   function renderSoon(name) {
     const r = $(`[data-screen="${name}"]`);
@@ -10114,16 +10357,26 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     renderSoon('analytics');
     renderSoon('workspace');
     renderSoon('settings');
+    renderRespostas();
 
     // Always start at briefing but show login first (never skip for demo product)
     go('briefing');
 
-    // Login form submit
+    // Login form submit — captures the submitter's name, no fake auth
+    const lgNameInput = $('#lgName');
+    if (lgNameInput) {
+      try { lgNameInput.value = localStorage.getItem('biV7_userName') || ''; } catch(_){}
+    }
     $('#v7-login-form')?.addEventListener('submit', e => {
       e.preventDefault();
+      const name = (lgNameInput?.value || '').trim();
+      if (name) {
+        try { localStorage.setItem('biV7_userName', name); } catch(_){}
+        const nomeField = document.getElementById('nome');
+        if (nomeField && !nomeField.value) nomeField.value = name;
+      }
       enterApp();
     });
-    $$('.v7-oauth-btn').forEach(b => b.addEventListener('click', enterApp));
 
     // Logout button (in sidebar foot)
     $('#v7-logout')?.addEventListener('click', () => {
