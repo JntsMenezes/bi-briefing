@@ -1778,6 +1778,36 @@ body.dark .eu-pill.eu-high { background: oklch(0.25 0.06 25); color: oklch(0.85 
   border-color: var(--text-strong);
   background: var(--surface-2);
 }
+.mail-dropdown { position: relative; display: inline-flex; }
+.mail-menu {
+  position: absolute;
+  top: calc(100% + .4rem);
+  left: 0;
+  min-width: 210px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.12);
+  padding: .35rem;
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  z-index: 40;
+}
+.mail-menu button {
+  font-family: var(--font-sans);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: .55rem .7rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background .12s;
+}
+.mail-menu button:hover { background: var(--surface-2); }
 .copy-btn.small {
   padding: .45rem .85rem;
   font-size: .78rem;
@@ -5704,7 +5734,14 @@ Custo de perda..."></textarea>
           <div class="action-btns">
             <button class="copy-btn" id="copyBtn" onclick="copiarResumo()" type="button">⎘ <span data-i18n="copy-btn">Copiar como texto</span></button>
             <button class="copy-btn" id="pdfBtn" onclick="gerarPDF()" type="button">⬇ <span data-i18n="pdf-btn">Baixar PDF</span></button>
-            <button class="copy-btn" id="mailBtn" onclick="enviarEmail()" type="button">✉ <span data-i18n="mail-btn">Enviar por e-mail</span></button>
+            <div class="mail-dropdown" id="mailDropdown">
+              <button class="copy-btn" id="mailBtn" onclick="toggleMailMenu(event)" type="button">✉ <span data-i18n="mail-btn">Enviar por e-mail</span></button>
+              <div class="mail-menu" id="mailMenu" hidden>
+                <button type="button" onclick="enviarEmail('app')"><span data-i18n="mail-opt-app">Abrir no app de e-mail</span></button>
+                <button type="button" onclick="enviarEmail('gmail')"><span data-i18n="mail-opt-gmail">Abrir no Gmail</span></button>
+                <button type="button" onclick="enviarEmail('outlook')"><span data-i18n="mail-opt-outlook">Abrir no Outlook</span></button>
+              </div>
+            </div>
             <button class="copy-btn" id="jiraBtn" onclick="exportJira()" type="button">⚙ <span data-i18n="jira-btn">Formato Jira</span></button>
             <button class="copy-btn" id="mdBtn" onclick="exportMarkdown()" type="button">↗ <span data-i18n="md-btn">Markdown / Notion</span></button>
           </div>
@@ -5900,6 +5937,7 @@ const i18n = {
     'next-short':'Próximo', 'back-short':'Voltar',
     generate:'Gerar Resumo →',
     'summary-title':'Resumo do Briefing', 'copy-btn':'Copiar como texto', 'pdf-btn':'Baixar PDF', 'mail-btn':'Enviar por e-mail',
+    'mail-opt-app':'Abrir no app de e-mail', 'mail-opt-gmail':'Abrir no Gmail', 'mail-opt-outlook':'Abrir no Outlook',
     'jira-btn':'Formato Jira', 'md-btn':'Markdown / Notion',
     copied:'Copiado',
     'reset-confirm':'Apagar tudo e começar do zero?',
@@ -6042,6 +6080,7 @@ const i18n = {
     'next-short':'Next', 'back-short':'Back',
     generate:'Generate Summary →',
     'summary-title':'Briefing Summary', 'copy-btn':'Copy as text', 'pdf-btn':'Download PDF', 'mail-btn':'Send by email',
+    'mail-opt-app':'Open in email app', 'mail-opt-gmail':'Open in Gmail', 'mail-opt-outlook':'Open in Outlook',
     'jira-btn':'Jira format', 'md-btn':'Markdown / Notion',
     copied:'Copied',
     'reset-confirm':'Erase everything and start fresh?',
@@ -7949,7 +7988,7 @@ function gerarPDF() {
   <title>BI Briefing — ${escapeHTML(state.nomeDash||'')}</title>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}
     body{font-family:'Geist',sans-serif;background:#faf8f4;color:#1c1916;padding:48px 56px;font-size:11px;line-height:1.55}
     .accent-bar{height:3px;background:${hexColor};border-radius:2px;margin-bottom:32px}
     .eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:${hexColor};margin-bottom:10px}
@@ -7969,7 +8008,10 @@ function gerarPDF() {
     .footer-pdf .brand{font-family:'Instrument Serif',serif;font-size:16px;color:#0a0908}
     .footer-pdf .brand em{color:${hexColor};font-style:italic}
     .footer-pdf .date{font-size:9px;color:#a8a195;text-align:right;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
-    @media print{body{padding:28px 36px}}
+    @media print{
+      body{padding:28px 36px}
+      *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important}
+    }
   </style></head><body>
   <div class="accent-bar"></div>
   <div class="eyebrow">BI Briefing Form v5 · Analytics</div>
@@ -8013,11 +8055,37 @@ function gerarPDF() {
   }, 3000);
 }
 
-function enviarEmail() {
+function toggleMailMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('mailMenu');
+  menu.hidden = !menu.hidden;
+}
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('mailDropdown');
+  const menu = document.getElementById('mailMenu');
+  if (menu && !menu.hidden && dd && !dd.contains(e.target)) menu.hidden = true;
+});
+
+function enviarEmail(via) {
+  via = via || 'app';
   const lines = buildTextLines();
   const subject = encodeURIComponent(`[BI Briefing] ${state.nomeDash||'Novo Projeto'}`);
   const body = encodeURIComponent(lines.join('\n'));
-  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+
+  const urls = {
+    app: `mailto:?subject=${subject}&body=${body}`,
+    gmail: `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`,
+    outlook: `https://outlook.office.com/mail/deeplink/compose?subject=${subject}&body=${body}`,
+  };
+
+  if (via === 'app') {
+    window.location.href = urls.app;
+  } else {
+    window.open(urls[via], '_blank', 'noopener');
+  }
+
+  const menu = document.getElementById('mailMenu');
+  if (menu) menu.hidden = true;
 
   const btn = document.getElementById('mailBtn');
   const origHTML = btn.innerHTML;
@@ -8030,6 +8098,7 @@ function enviarEmail() {
     btn.style.color = '';
   }, 3000);
 }
+window.toggleMailMenu = toggleMailMenu;
 
 window.runSmellTests = runSmellTests;
 window.updateReadinessUI = updateReadinessUI;
