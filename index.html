@@ -5732,18 +5732,7 @@ Custo de perda..."></textarea>
           <div class="result-card" id="result-card"></div>
 
           <div class="action-btns">
-            <button class="copy-btn" id="copyBtn" onclick="copiarResumo()" type="button">⎘ <span data-i18n="copy-btn">Copiar como texto</span></button>
             <button class="copy-btn" id="pdfBtn" onclick="gerarPDF()" type="button">⬇ <span data-i18n="pdf-btn">Baixar PDF</span></button>
-            <div class="mail-dropdown" id="mailDropdown">
-              <button class="copy-btn" id="mailBtn" onclick="toggleMailMenu(event)" type="button">✉ <span data-i18n="mail-btn">Enviar por e-mail</span></button>
-              <div class="mail-menu" id="mailMenu" hidden>
-                <button type="button" onclick="enviarEmail('app')"><span data-i18n="mail-opt-app">Abrir no app de e-mail</span></button>
-                <button type="button" onclick="enviarEmail('gmail')"><span data-i18n="mail-opt-gmail">Abrir no Gmail</span></button>
-                <button type="button" onclick="enviarEmail('outlook')"><span data-i18n="mail-opt-outlook">Abrir no Outlook</span></button>
-              </div>
-            </div>
-            <button class="copy-btn" id="jiraBtn" onclick="exportJira()" type="button">⚙ <span data-i18n="jira-btn">Formato Jira</span></button>
-            <button class="copy-btn" id="mdBtn" onclick="exportMarkdown()" type="button">↗ <span data-i18n="md-btn">Markdown / Notion</span></button>
           </div>
         </div>
       </div>
@@ -7945,6 +7934,29 @@ function gerarPDF() {
   captureFullState();
   estimateEffortUsage();
   updateReadinessUI();
+  buildWireframe();
+
+  // Resolve CSS custom properties to literal values so the score circle
+  // renders correctly in the standalone PDF window (which has no access
+  // to this page's :root variables). The wireframe SVG already uses
+  // literal hex colors, so it can be embedded as-is.
+  const rootCS = getComputedStyle(document.documentElement);
+  const cBorder = (rootCS.getPropertyValue('--border') || '#e6dfd0').trim();
+  const cAccent = (rootCS.getPropertyValue('--accent') || hexColor).trim();
+  const cTextStrong = (rootCS.getPropertyValue('--text-strong') || '#0a0908').trim();
+  const cMuted = (rootCS.getPropertyValue('--muted') || '#7d766a').trim();
+
+  const readinessCircleEl = document.getElementById('readinessCircle');
+  const readinessSvg = readinessCircleEl ? readinessCircleEl.innerHTML
+    .replace(/var\(--border\)/g, cBorder)
+    .replace(/var\(--accent\)/g, cAccent)
+    .replace(/var\(--text-strong\)/g, cTextStrong)
+    .replace(/var\(--muted\)/g, cMuted)
+    .replace(/var\(--font-display\)/g, "'Instrument Serif',serif")
+    .replace(/var\(--font-mono\)/g, "'JetBrains Mono',monospace")
+    : '';
+  const readinessMsg = document.getElementById('readinessMsg')?.textContent || '';
+  const wireframeSvg = document.getElementById('wireframeContainer')?.innerHTML || '';
 
   const rows = [
     [t.r_nome, state.nome],
@@ -7998,6 +8010,14 @@ function gerarPDF() {
     .scorebar .sb-item{font-size:10px;color:#7d766a;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em}
     .scorebar .sb-item strong{display:block;font-family:'Instrument Serif',serif;font-size:22px;color:#0a0908;letter-spacing:-.01em;margin-top:4px;text-transform:none}
     .divider{height:1px;background:#e6dfd0;margin:24px 0 16px}
+    .pdf-score-row{margin:20px 0;padding:18px;background:#fff;border:1px solid #e6dfd0;border-radius:8px;display:flex;align-items:center;gap:24px}
+    .pdf-score-row svg{flex-shrink:0}
+    .pdf-score-msg{font-size:12px;color:#1c1916;line-height:1.5}
+    .pdf-score-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#7d766a;margin-bottom:4px}
+    .pdf-wireframe{margin:20px 0}
+    .pdf-wireframe-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#7d766a;margin-bottom:8px}
+    .pdf-wireframe-box{border:1px solid #e6dfd0;border-radius:8px;overflow:hidden;page-break-inside:avoid}
+    .pdf-wireframe-box svg{display:block;width:100%;height:auto}
     table{width:100%;border-collapse:collapse}
     tr{border-bottom:1px solid #f0ebdf}
     tr:last-child{border-bottom:none}
@@ -8022,6 +8042,17 @@ function gerarPDF() {
     <div class="sb-item">${t.r_effort}<strong>${escapeHTML(state.effortLabel||'—')}</strong></div>
     <div class="sb-item">${t.r_usage}<strong>${escapeHTML(state.usageLabel||'—')}</strong></div>
     <div class="sb-item">${t.r_urgencia}<strong>${state.urgencia&&state.urgencia!=='—'?state.urgencia+'/5':'—'}</strong></div>
+  </div>
+  <div class="pdf-score-row">
+    ${readinessSvg}
+    <div>
+      <div class="pdf-score-label">${t['rd-title']||'Score de Prontidão'}</div>
+      <div class="pdf-score-msg">${escapeHTML(readinessMsg)}</div>
+    </div>
+  </div>
+  <div class="pdf-wireframe">
+    <div class="pdf-wireframe-label">${t['wf-title']||'Como o BI vai parecer'}</div>
+    <div class="pdf-wireframe-box">${wireframeSvg}</div>
   </div>
   <div class="divider"></div>
   <table>${tableRows}</table>
