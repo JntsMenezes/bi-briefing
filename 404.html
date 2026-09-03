@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BI Briefing</title>
+<script>
+  // GitHub Pages has no server-side routing. This mimics the well-known
+  // "spa-github-pages" trick: any unmatched path (e.g. /bi-briefing/r/abc123)
+  // lands here, and we redirect to the app's index with the original path
+  // stashed in a query string. index.html restores the pretty URL on load.
+  var loc = window.location;
+  var parts = loc.pathname.split('/'); // ['', 'bi-briefing', 'r', 'abc123']
+  var repoBase = '/' + (parts[1] || '') + '/';
+  var rest = parts.slice(2).join('/');
+  loc.replace(repoBase + '?p=/' + rest + loc.search + loc.hash);
+</script>
+</head>
+<body></body>
+</html>

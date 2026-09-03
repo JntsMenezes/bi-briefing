@@ -4777,9 +4777,38 @@ body.dark .v7-screen-briefing {
   --border-strong: #4a4334;
 }
 </style>
+<style>
+#lgError { color:#dc2626; font-size:.8rem; line-height:1.4; margin:-.3rem 0 .9rem; }
+.v7-login-meta-row { display:flex; justify-content:center; gap:.35rem; }
+.v7-login-meta-row a { cursor:pointer; }
+body.v7-public-mode .v7-sb { display:none; }
+body.v7-public-mode .v7-shell { grid-template-columns: 1fr; }
+body.v7-public-mode .v7-mob-nav { display:none !important; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
 </head>
 <body>
+
+<script>
+(function() {
+  var params = new URLSearchParams(location.search);
+  var p = params.get('p');
+  var token = null;
+  if (p) {
+    var m = p.match(/^\/r\/([A-Za-z0-9_-]+)\/?$/);
+    if (m) token = m[1];
+    params.delete('p');
+    var qs = params.toString();
+    var cleanPath = location.pathname.replace(/[^/]*$/, '') + p.replace(/^\//, '');
+    try { history.replaceState(null, '', cleanPath + (qs ? '?' + qs : '') + location.hash); } catch (_) {}
+  } else {
+    var m2 = location.pathname.match(/\/r\/([A-Za-z0-9_-]+)\/?$/);
+    if (m2) token = m2[1];
+  }
+  if (token) window.V7_PUBLIC_TOKEN = token;
+})();
+</script>
 
 <!-- ══════════════════════════════════════
      V7 LOGIN SCREEN
@@ -4809,15 +4838,30 @@ body.dark .v7-screen-briefing {
   </div>
   <div class="v7-login-form">
     <form id="v7-login-form" class="v7-login-card">
-      <h2 data-v7i18n="lg-welcome">Antes de começar</h2>
-      <p class="v7-login-sub" data-v7i18n="lg-welcome-sub">Seu acesso já foi confirmado pela sua conta. Só precisamos saber como te identificar nas respostas.</p>
+      <h2 id="lgTitle">Entrar</h2>
+      <p class="v7-login-sub">Acesse com sua conta Google ou com e-mail e senha.</p>
 
-      <label data-v7i18n="lg-name">Seu nome</label>
-      <input type="text" id="lgName" autocomplete="name" placeholder="Ex: Jonatas Menezes" required>
+      <button type="button" id="lgGoogleBtn" class="v7-oauth-btn">
+        <svg viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.98v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.03l2.97-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .98 4.97l2.97 2.33C4.66 5.17 6.65 3.58 9 3.58z"/></svg>
+        <span>Continuar com Google</span>
+      </button>
 
-      <button type="submit" class="v7-login-submit" data-v7i18n="lg-submit">Continuar</button>
+      <div class="v7-login-sep">ou</div>
 
-      <div class="v7-login-meta" data-v7i18n="lg-meta">Esse nome fica salvo neste dispositivo e é usado para identificar o que você enviar.</div>
+      <label for="lgEmail">E-mail</label>
+      <input type="email" id="lgEmail" autocomplete="email" required>
+
+      <label for="lgPassword">Senha</label>
+      <input type="password" id="lgPassword" autocomplete="current-password" required>
+
+      <div id="lgError" hidden></div>
+
+      <button type="submit" class="v7-login-submit" id="lgSubmitBtn">Entrar</button>
+
+      <div class="v7-login-meta v7-login-meta-row">
+        <span id="lgToggleLabel">Não tem conta?</span>
+        <a id="lgToggleMode">Criar conta</a>
+      </div>
     </form>
   </div>
 </div>
@@ -4841,9 +4885,9 @@ body.dark .v7-screen-briefing {
 
     <nav class="v7-sb-nav">
       <div class="v7-sb-section" data-v7i18n="sb-section-main">Workspace</div>
-      <button class="v7-sb-link active" type="button" data-target="briefing" onclick="v7Go('briefing')">
+      <button class="v7-sb-link active" type="button" data-target="pedidos" onclick="v7Go('pedidos')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-briefing">Novo briefing</span>
+        <span class="v7-sb-link-text" data-v7i18n="sb-pedidos">Pedidos</span>
       </button>
       <button class="v7-sb-link" type="button" data-target="respostas" onclick="v7Go('respostas')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
@@ -4854,10 +4898,10 @@ body.dark .v7-screen-briefing {
 
     <div class="v7-sb-foot">
       <div class="v7-sb-user" id="v7-logout" title="Sair">
-        <div class="v7-sb-user-avatar">JM</div>
+        <div class="v7-sb-user-avatar">··</div>
         <div class="v7-sb-user-info">
-          <div class="v7-sb-user-name">Jonatas Menezes</div>
-          <div class="v7-sb-user-mail">jonatas@promofarma.com.br</div>
+          <div class="v7-sb-user-name">—</div>
+          <div class="v7-sb-user-mail">—</div>
         </div>
       </div>
     </div>
@@ -4936,11 +4980,15 @@ body.dark .v7-screen-briefing {
     <section class="v7-screen" data-screen="workspace" data-screen-label="05 Workspace"></section>
     <section class="v7-screen" data-screen="settings" data-screen-label="06 Settings"></section>
 
-    <!-- RESPOSTAS SCREEN (submissions received via the db capability) -->
+    <!-- PEDIDOS SCREEN (create/list requests, backed by Supabase `requests`) -->
+    <section class="v7-screen active" data-screen="pedidos" data-screen-label="02 Pedidos"></section>
+
+    <!-- RESPOSTAS SCREEN (answered requests, backed by Supabase `requests`) -->
     <section class="v7-screen" data-screen="respostas" data-screen-label="02 Respostas"></section>
 
-    <!-- BRIEFING SCREEN (wraps existing v6 form intact) -->
-    <section class="v7-screen v7-screen-briefing active" data-screen="briefing" data-screen-label="03 Briefing">
+    <!-- BRIEFING SCREEN (wraps existing v6 form intact) — only reachable via the
+         public /r/{token} link now; internal nav no longer routes here. -->
+    <section class="v7-screen v7-screen-briefing" data-screen="briefing" data-screen-label="03 Briefing">
 
 <div class="page">
   <div class="shell">
@@ -7920,8 +7968,9 @@ function copyToClipboard(text, btn) {
 async function enviarResposta() {
   const btn = document.getElementById('sendBtn');
   const t = i18n[lang];
-  const db = window.v7GetDb ? await window.v7GetDb() : null;
-  if (!db) {
+  const sb = window.sb;
+  const token = window.V7_PUBLIC_TOKEN;
+  if (!sb || !token) {
     showToast(t['resp-unavailable'] || 'Indisponível nesta cópia.', 4200);
     return;
   }
@@ -7955,24 +8004,23 @@ async function enviarResposta() {
   try { submitterName = localStorage.getItem('biV7_userName') || ''; } catch (_) {}
 
   const payload = {
-    submittedAt: Date.now(),
-    submitterName: submitterName || state.nome || '—',
-    lang,
-    nome: state.nome || '', nomeDash: state.nomeDash || '', audiencia: state.audiencia || '',
-    freq: state.freq || '', stakeholders: state.stakeholders || '', biExistente: state.biExistente || '',
+    submitter_name: submitterName || state.nome || '—',
+    nome: state.nome || '', nome_dash: state.nomeDash || '', audiencia: state.audiencia || '',
+    freq: state.freq || '', stakeholders: state.stakeholders || '', bi_existente: state.biExistente || '',
     story: state.story || '', decisao: state.decisao || '', ancora: state.ancora || '',
-    resolveHoje: state.resolveHoje || '', referencia: state.referencia || '', fonte: state.fonte || '',
-    excelInfo: state.excelInfo || '', metricas: state.metricas || '', dimensoes: state.dimensoes || '',
-    visuals: state.visuals || '', corHex: state.corHex || '', modoBI: state.modoBI || '',
-    acesso: state.acesso || '', urgencia: state.urgencia || '', naoObjetivos: state.naoObjetivos || '',
-    obs: state.obs || '', readinessScore: state.readinessScore || 0, effortLabel: state.effortLabel || '',
-    usageLabel: state.usageLabel || '',
+    resolve_hoje: state.resolveHoje || '', referencia: state.referencia || '', fonte: state.fonte || '',
+    excel_info: state.excelInfo || '', metricas: state.metricas || '', dimensoes: state.dimensoes || '',
+    visuals: state.visuals || '', cor_hex: state.corHex || '', modo_bi: state.modoBI || '',
+    acesso: state.acesso || '', urgencia: state.urgencia || '', nao_objetivos: state.naoObjetivos || '',
+    obs: state.obs || '', readiness_score: state.readinessScore || 0, effort_label: state.effortLabel || '',
+    usage_label: state.usageLabel || '',
     paleta: currentPalette.length ? [0, 2, 4, 6, 8, 10].map(i => currentPalette[i]) : [],
-    readinessSvg, wireframeSvg,
+    readiness_svg: readinessSvg, wireframe_svg: wireframeSvg,
   };
 
   try {
-    await db.collection('submissions').add(payload);
+    const { error } = await sb.rpc('answer_request_by_token', { p_token: token, p_payload: payload });
+    if (error) throw error;
     btn.innerHTML = '✓ ' + (t['send-ok'] || 'Enviado');
     showToast(t['send-ok'] || 'Resposta enviada ✓');
   } catch (e) {
@@ -9074,6 +9122,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Demandas',
       'sb-briefing': 'Novo briefing',
+      'sb-pedidos': 'Pedidos',
       'sb-respostas': 'Respostas recebidas',
       'resp-empty-title': 'Nenhuma resposta ainda',
       'resp-empty-sub': 'Envie o link deste app para alguém preencher. As respostas aparecem aqui, só para você.',
@@ -9167,6 +9216,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Requests',
       'sb-briefing': 'New briefing',
+      'sb-pedidos': 'Requests',
       'sb-respostas': 'Received responses',
       'resp-empty-title': 'No responses yet',
       'resp-empty-sub': 'Send this app\'s link to someone to fill it out. Responses show up here, visible only to you.',
@@ -9253,6 +9303,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': 'Panel',
       'sb-demands': 'Solicitudes',
       'sb-briefing': 'Nuevo briefing',
+      'sb-pedidos': 'Pedidos',
       'sb-respostas': 'Respuestas recibidas',
       'resp-empty-title': 'Ninguna respuesta todavía',
       'resp-empty-sub': 'Envía el enlace de esta app para que alguien la complete. Las respuestas aparecen aquí, solo para ti.',
@@ -9339,6 +9390,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-dashboard': '仪表板',
       'sb-demands': '需求',
       'sb-briefing': '新建需求',
+      'sb-pedidos': '请求',
       'sb-respostas': '收到的回复',
       'resp-empty-title': '暂无回复',
       'resp-empty-sub': '把这个应用的链接发给别人填写。回复会显示在这里，只有你能看到。',
@@ -9512,22 +9564,6 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   const $  = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
-  /* ─── CLOUD (db capability) ───
-     Only resolves when this page is actually served as a Claude Artifact.
-     A saved file, another host (GitHub Pages), or a viewer without the
-     capability all get null here — every caller must handle that. */
-  let DB = null;
-  let dbReady = (async () => {
-    try {
-      if (typeof window.claude === 'undefined' || typeof window.claude.use !== 'function') return null;
-      DB = await window.claude.use('db');
-    } catch (_) { DB = null; }
-    return DB;
-  })();
-  // Bridge for the briefing-form scripts (a separate IIFE) to reach the
-  // db capability without duplicating the claude.use() bootstrap.
-  window.v7GetDb = async function() { await dbReady; return DB; };
-
   // Translation helper for shell strings
   function tt(key) {
     if (!window.V7_I18N) return key;
@@ -9567,6 +9603,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     if (typeof window._v7MobNavSync === 'function') window._v7MobNavSync(screen);
     if (screen === 'respostas') {
       renderRespostas();
+    }
+    if (screen === 'pedidos') {
+      renderPedidos();
     }
     // If briefing screen, trigger its v6 init reveal animations gracefully
     if (screen === 'briefing') {
@@ -10097,13 +10136,27 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     return name.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase();
   }
 
-  /* ─── RENDER: RESPOSTAS (submissions received via the db capability) ─── */
+  /* ─── RENDER: RESPOSTAS (answered requests, backed by Supabase `requests`) ─── */
   let RESPOSTAS = [];
-  let respostasUnsub = null;
+  let respostasChannel = null;
 
   function fmtDate(ts) {
     try { return new Date(ts).toLocaleString(V7.lang === 'pt' ? 'pt-BR' : V7.lang === 'es' ? 'es-ES' : V7.lang === 'zh' ? 'zh-CN' : 'en-US'); }
     catch (_) { return ''; }
+  }
+
+  function mapRequestRow(row) {
+    return {
+      id: row.id,
+      nome: row.nome, nomeDash: row.nome_dash, audiencia: row.audiencia, freq: row.freq,
+      decisao: row.decisao, fonte: row.fonte, metricas: row.metricas, dimensoes: row.dimensoes,
+      visuals: row.visuals, corHex: row.cor_hex, modoBI: row.modo_bi, urgencia: row.urgencia, obs: row.obs,
+      submitterName: row.submitter_name,
+      submittedAt: row.answered_at ? new Date(row.answered_at).getTime() : new Date(row.created_at).getTime(),
+      readinessScore: row.readiness_score, effortLabel: row.effort_label, usageLabel: row.usage_label,
+      readinessSvg: row.readiness_svg, wireframeSvg: row.wireframe_svg, paleta: row.paleta,
+      status: row.status, dashboardUrl: row.dashboard_url,
+    };
   }
 
   async function renderRespostas() {
@@ -10112,8 +10165,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
 
     root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
 
-    const db = await (window.v7GetDb ? window.v7GetDb() : Promise.resolve(null));
-    if (!db) {
+    const sb = window.sb;
+    const wsId = window.V7_WORKSPACE_ID;
+    if (!sb || !wsId) {
       root.innerHTML = `
         <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div></div>
         <div class="v7-card" style="padding:3rem 1.5rem;">
@@ -10122,21 +10176,126 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       return;
     }
 
-    if (respostasUnsub) { respostasUnsub(); respostasUnsub = null; }
-    respostasUnsub = db.collection('submissions').orderBy('submittedAt', 'desc').limit(200).onSnapshot(
-      (snap) => {
-        RESPOSTAS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        const badge = $('#respostasBadge');
-        if (badge) {
-          badge.hidden = RESPOSTAS.length === 0;
-          badge.textContent = RESPOSTAS.length;
-        }
-        if ($('#respostas-detail-view')) return; // don't clobber an open detail
-        paintRespostasList(root);
-      },
-      () => { paintRespostasList(root); }
-    );
+    async function load() {
+      const { data, error } = await sb.from('requests')
+        .select('*')
+        .eq('workspace_id', wsId)
+        .in('status', ['answered', 'delivered'])
+        .order('answered_at', { ascending: false })
+        .limit(200);
+      RESPOSTAS = error ? [] : (data || []).map(mapRequestRow);
+      const badge = $('#respostasBadge');
+      if (badge) {
+        badge.hidden = RESPOSTAS.length === 0;
+        badge.textContent = RESPOSTAS.length;
+      }
+      if ($('#respostas-detail-view')) return; // don't clobber an open detail
+      paintRespostasList(root);
+    }
+
+    if (respostasChannel) { sb.removeChannel(respostasChannel); respostasChannel = null; }
+    respostasChannel = sb.channel('requests-changes-' + wsId)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'requests', filter: `workspace_id=eq.${wsId}` }, load)
+      .subscribe();
+
+    await load();
   }
+  window.v7RenderRespostas = renderRespostas;
+
+  /* ─── RENDER: PEDIDOS (create/list requests + share link) ─── */
+  function pedidoLink(token) { return (window.v7PedidoLink ? window.v7PedidoLink(token) : token); }
+
+  async function renderPedidos() {
+    const root = $('[data-screen="pedidos"]');
+    if (!root) return;
+
+    root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
+
+    const sb = window.sb;
+    const wsId = window.V7_WORKSPACE_ID;
+    if (!sb || !wsId) {
+      root.innerHTML = `
+        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-pedidos') || 'Pedidos'}</h1></div></div>
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>Sem acesso a um workspace</h4><p>Sua conta ainda não está vinculada a um workspace.</p></div>
+        </div>`;
+      return;
+    }
+
+    const { data, error } = await sb.from('requests')
+      .select('id, share_token, status, created_at, sent_at, answered_at, nome_dash, submitter_name')
+      .eq('workspace_id', wsId)
+      .order('created_at', { ascending: false })
+      .limit(100);
+    const list = error ? [] : (data || []);
+
+    const statusLabels = { draft: 'Rascunho', sent: 'Aguardando resposta', answered: 'Respondido', delivered: 'Entregue', archived: 'Arquivado' };
+    const badgeStyle = 'font:500 .72rem var(--font-mono);padding:.25rem .6rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;';
+
+    const rows = list.map(r => `
+      <div class="v7-table-row">
+        <div>
+          <div class="v7-table-title">${escapeXML(r.nome_dash || 'Pedido sem título')}</div>
+          <div class="v7-table-id">${escapeXML(r.submitter_name || '—')}</div>
+        </div>
+        <div><span style="${badgeStyle}">${statusLabels[r.status] || r.status}</span></div>
+        <div class="v7-table-cell muted v7-hide-md">${fmtDate(new Date(r.created_at).getTime())}</div>
+        <div>${r.status === 'sent'
+          ? `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7CopyPedidoLink('${r.share_token}', this)">Copiar link</button>`
+          : (r.status === 'answered' || r.status === 'delivered'
+            ? `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7Go('respostas')">Ver resposta</button>`
+            : '')}
+        </div>
+      </div>
+    `).join('');
+
+    root.innerHTML = `
+      <div class="v7-screen-head">
+        <div>
+          <h1 class="v7-screen-title">${tt('sb-pedidos') || 'Pedidos'}</h1>
+          <div class="v7-screen-sub">Crie um link e envie para quem vai descrever a demanda de BI.</div>
+        </div>
+        <div><button type="button" class="v7-btn v7-btn-primary" id="v7-new-pedido-btn">+ Criar novo pedido</button></div>
+      </div>
+      ${list.length ? `
+        <div class="v7-table">
+          <div class="v7-table-row head"><div>Pedido</div><div>Status</div><div class="v7-hide-md">Criado</div><div></div></div>
+          ${rows}
+        </div>` : `
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>Nenhum pedido ainda</h4><p>Clique em "Criar novo pedido" para gerar seu primeiro link.</p></div>
+        </div>`}
+    `;
+
+    $('#v7-new-pedido-btn')?.addEventListener('click', async () => {
+      const btn = $('#v7-new-pedido-btn');
+      if (btn) btn.disabled = true;
+      const { data: created, error: createErr } = await sb.from('requests').insert({
+        workspace_id: wsId, org_id: window.V7_ORG_ID, created_by: window.V7_USER_ID,
+        status: 'sent', sent_at: new Date().toISOString(),
+      }).select('id, share_token').single();
+      if (createErr || !created) {
+        if (typeof window.showToast === 'function') window.showToast('Falha ao criar pedido.', 4000);
+        if (btn) btn.disabled = false;
+        return;
+      }
+      await renderPedidos();
+      try { await navigator.clipboard.writeText(pedidoLink(created.share_token)); } catch (_) {}
+      if (typeof window.showToast === 'function') window.showToast('Pedido criado! Link copiado.', 3000);
+    });
+  }
+  window.v7RenderPedidos = renderPedidos;
+
+  window.v7CopyPedidoLink = function(token, btn) {
+    const link = pedidoLink(token);
+    const done = () => {
+      if (!btn) return;
+      const orig = btn.textContent;
+      btn.textContent = 'Copiado ✓';
+      setTimeout(() => { btn.textContent = orig; }, 1800);
+    };
+    navigator.clipboard.writeText(link).then(done).catch(done);
+  };
 
   function paintRespostasList(root) {
     root = root || $('[data-screen="respostas"]');
@@ -10358,36 +10517,19 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     renderSoon('workspace');
     renderSoon('settings');
     renderRespostas();
+    renderPedidos();
 
-    // Always start at briefing but show login first (never skip for demo product)
-    go('briefing');
+    // Default screen; real auth gate (Supabase) is wired separately and
+    // decides whether the login overlay or the shell is actually shown.
+    go('pedidos');
 
-    // Login form submit — captures the submitter's name, no fake auth
-    const lgNameInput = $('#lgName');
-    if (lgNameInput) {
-      try { lgNameInput.value = localStorage.getItem('biV7_userName') || ''; } catch(_){}
-    }
-    $('#v7-login-form')?.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = (lgNameInput?.value || '').trim();
-      if (name) {
-        try { localStorage.setItem('biV7_userName', name); } catch(_){}
-        const nomeField = document.getElementById('nome');
-        if (nomeField && !nomeField.value) nomeField.value = name;
-      }
-      enterApp();
-    });
-
-    // Logout button (in sidebar foot)
-    $('#v7-logout')?.addEventListener('click', () => {
+    // Logout button (in sidebar foot) — real Supabase sign-out.
+    $('#v7-logout')?.addEventListener('click', async () => {
+      if (window.sb) { try { await window.sb.auth.signOut(); } catch (_) {} }
       try { localStorage.removeItem('biV7_loggedIn'); } catch(_){}
       V7.loggedIn = false;
-      const login = $('.v7-login');
-      if (login) {
-        login.style.display = '';
-        login.classList.remove('hide');
-      }
-      document.body.classList.remove('v7-app');
+      window.V7_WORKSPACE_ID = null; window.V7_ORG_ID = null; window.V7_USER_ID = null;
+      location.reload();
     });
   }
 
@@ -10526,5 +10668,179 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
 })();
 </script>
 
+<script>
+/* ══════════════════════════════════════
+   SUPABASE — auth, workspace resolution,
+   public-link (/r/{token}) mode
+══════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  const SUPABASE_URL = 'https://tovjamavkkcfbodmljhp.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_odelJJwlY0Z6uObcxdb6uA_jAbEHRfX';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  window.sb = sb;
+
+  const $ = (s, r) => (r || document).querySelector(s);
+
+  function siteBase() {
+    let p = location.pathname;
+    if (!/\/$/.test(p)) p = p.replace(/[^/]*$/, '');
+    return location.origin + p;
+  }
+  window.v7SiteBase = siteBase;
+  window.v7PedidoLink = function(token) { return siteBase() + 'r/' + token; };
+
+  function initials(name) {
+    return (name || '').trim().split(/\s+/).slice(0, 2).map(n => n[0]).join('').toUpperCase() || '?';
+  }
+
+  function setLoginError(msg) {
+    const el = $('#lgError');
+    if (!el) return;
+    if (!msg) { el.hidden = true; el.textContent = ''; return; }
+    el.hidden = false; el.textContent = msg;
+  }
+
+  function friendlyAuthError(error) {
+    const m = (error && error.message) || '';
+    if (/invalid login credentials/i.test(m)) return 'E-mail ou senha incorretos.';
+    if (/user already registered/i.test(m)) return 'Esse e-mail já tem conta. Tente entrar.';
+    if (/password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 6 caracteres.';
+    if (/email not confirmed/i.test(m)) return 'Confirme seu e-mail antes de entrar.';
+    return m || 'Não foi possível autenticar.';
+  }
+
+  function populateUserSidebar(user) {
+    const meta = user.user_metadata || {};
+    const name = meta.full_name || meta.name || (user.email ? user.email.split('@')[0] : 'Usuário');
+    const nameEl = $('.v7-sb-user-name'), mailEl = $('.v7-sb-user-mail'), avatarEl = $('.v7-sb-user-avatar');
+    if (nameEl) nameEl.textContent = name;
+    if (mailEl) mailEl.textContent = user.email || '';
+    if (avatarEl) {
+      const pic = meta.avatar_url || meta.picture;
+      avatarEl.innerHTML = pic
+        ? `<img src="${pic}" alt="" style="width:100%;height:100%;border-radius:inherit;object-fit:cover;">`
+        : initials(name);
+    }
+  }
+
+  async function resolveWorkspace(userId) {
+    const { data, error } = await sb.from('workspace_members')
+      .select('workspace_id, workspaces(id, org_id, name)')
+      .eq('user_id', userId).limit(1).maybeSingle();
+    if (error || !data) return null;
+    return { workspaceId: data.workspace_id, orgId: data.workspaces && data.workspaces.org_id };
+  }
+
+  async function enterInternalApp(user) {
+    populateUserSidebar(user);
+    window.V7_USER_ID = user.id;
+    const ws = await resolveWorkspace(user.id);
+    window.V7_WORKSPACE_ID = ws ? ws.workspaceId : null;
+    window.V7_ORG_ID = ws ? ws.orgId : null;
+    window.v7Login();
+    window.v7Go('pedidos');
+    if (typeof window.v7RenderPedidos === 'function') window.v7RenderPedidos();
+    if (typeof window.v7RenderRespostas === 'function') window.v7RenderRespostas();
+  }
+
+  async function enterPublicMode(token) {
+    document.body.classList.add('v7-public-mode');
+    const { data, error } = await sb.rpc('get_request_by_token', { p_token: token });
+    const row = Array.isArray(data) ? data[0] : data;
+    window.v7Login();
+    window.v7Go('briefing');
+    if (error || !row) {
+      const root = $('[data-screen="briefing"]');
+      if (root) {
+        root.innerHTML = `
+          <div class="v7-screen-head">
+            <div>
+              <h1 class="v7-screen-title">Link indisponível</h1>
+              <div class="v7-screen-sub">Esse link já foi respondido ou não é válido.</div>
+            </div>
+          </div>`;
+      }
+    }
+  }
+
+  async function boot() {
+    if (window.V7_PUBLIC_TOKEN) {
+      await enterPublicMode(window.V7_PUBLIC_TOKEN);
+      return;
+    }
+
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) await enterInternalApp(session.user);
+
+    sb.auth.onAuthStateChange(async (event, newSession) => {
+      if (window.V7_PUBLIC_TOKEN) return;
+      if (event === 'SIGNED_IN' && newSession) {
+        if (location.search || location.hash) {
+          try { history.replaceState(null, '', location.pathname); } catch (_) {}
+        }
+        await enterInternalApp(newSession.user);
+      }
+      if (event === 'SIGNED_OUT') {
+        window.V7_WORKSPACE_ID = null; window.V7_ORG_ID = null; window.V7_USER_ID = null;
+      }
+    });
+
+    // Google OAuth
+    $('#lgGoogleBtn')?.addEventListener('click', async () => {
+      setLoginError(null);
+      const { error } = await sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: location.origin + location.pathname },
+      });
+      if (error) setLoginError(friendlyAuthError(error));
+    });
+
+    // Sign in / sign up toggle
+    let signUpMode = false;
+    const toggle = $('#lgToggleMode');
+    const toggleLabel = $('#lgToggleLabel');
+    const submitBtn = $('#lgSubmitBtn');
+    const titleEl = $('#lgTitle');
+    toggle?.addEventListener('click', () => {
+      signUpMode = !signUpMode;
+      if (titleEl) titleEl.textContent = signUpMode ? 'Criar conta' : 'Entrar';
+      if (submitBtn) submitBtn.textContent = signUpMode ? 'Criar conta' : 'Entrar';
+      if (toggle) toggle.textContent = signUpMode ? 'Já tenho conta' : 'Criar conta';
+      if (toggleLabel) toggleLabel.textContent = signUpMode ? 'Já tem conta?' : 'Não tem conta?';
+      setLoginError(null);
+    });
+
+    // Email/password form
+    $('#v7-login-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      setLoginError(null);
+      const email = ($('#lgEmail')?.value || '').trim();
+      const password = $('#lgPassword')?.value || '';
+      if (!email || !password) return;
+      if (submitBtn) submitBtn.disabled = true;
+      try {
+        if (signUpMode) {
+          const { data, error } = await sb.auth.signUp({ email, password });
+          if (error) { setLoginError(friendlyAuthError(error)); return; }
+          if (!data.session) { setLoginError('Conta criada! Confirme seu e-mail antes de entrar.'); return; }
+        } else {
+          const { error } = await sb.auth.signInWithPassword({ email, password });
+          if (error) { setLoginError(friendlyAuthError(error)); return; }
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
 
 </body></html>
