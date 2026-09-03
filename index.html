@@ -10362,7 +10362,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
           <a href="${escapeXML(r.dashboardUrl)}" target="_blank" rel="noopener" style="display:block; color:var(--brand); font-size:.85rem; word-break:break-all; margin-bottom:.8rem;">${escapeXML(r.dashboardUrl)}</a>
         ` : ''}
         <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
-          <input id="deliveryUrlInput" type="url" placeholder="${V7.lang==='pt'?'Link do Power BI publicado':'Published Power BI link'}" value="${escapeXML(r.dashboardUrl || '')}"
+          <input id="deliveryUrlInput" type="url" placeholder="${V7.lang==='pt'?'Link do Power BI publicado':'Published Power BI link'}" value="${escapeXML(r.dashboardUrl || '')}" onfocus="this.select()"
             style="flex:1; min-width:220px; padding:.6rem .75rem; border:var(--hairline); border-radius:9px; background:var(--bg); color:var(--text-strong); font:400 .88rem var(--font-sans);">
           <button type="button" class="v7-btn" id="deliverySaveBtn" onclick="v7SaveDelivery('${r.id}')">
             ${delivered ? (V7.lang==='pt'?'Atualizar link':'Update link') : (V7.lang==='pt'?'Marcar como entregue':'Mark as delivered')}
