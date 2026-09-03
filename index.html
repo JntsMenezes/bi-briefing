@@ -10220,14 +10220,29 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     const { data, error } = await sb.from('requests')
       .select('id, share_token, status, created_at, sent_at, answered_at, nome_dash, submitter_name')
       .eq('workspace_id', wsId)
+      .neq('status', 'archived')
       .order('created_at', { ascending: false })
       .limit(100);
     const list = error ? [] : (data || []);
 
     const statusLabels = { draft: 'Rascunho', sent: 'Aguardando resposta', answered: 'Respondido', delivered: 'Entregue', archived: 'Arquivado' };
     const badgeStyle = 'font:500 .72rem var(--font-mono);padding:.25rem .6rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;';
+    const actionBtn = (label, onclick) => `<button type="button" class="v7-btn v7-btn-secondary" style="padding:.4rem .7rem; font-size:.78rem;" onclick="${onclick}">${label}</button>`;
 
-    const rows = list.map(r => `
+    const rows = list.map(r => {
+      const actions = [];
+      if (r.status === 'sent') {
+        actions.push(actionBtn('Copiar link', `v7CopyPedidoLink('${r.share_token}', this)`));
+        actions.push(actionBtn('Regenerar link', `v7RegenerateLink('${r.id}')`));
+      }
+      if (r.status === 'answered' || r.status === 'delivered') {
+        actions.push(actionBtn('Ver resposta', `v7Go('respostas')`));
+      }
+      if (r.status === 'draft' || r.status === 'sent') {
+        actions.push(actionBtn('Excluir', `v7DeletePedido('${r.id}')`));
+      }
+      actions.push(actionBtn('Arquivar', `v7ArchivePedido('${r.id}')`));
+      return `
       <div class="v7-table-row">
         <div>
           <div class="v7-table-title">${escapeXML(r.nome_dash || 'Pedido sem título')}</div>
@@ -10235,14 +10250,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         </div>
         <div><span style="${badgeStyle}">${statusLabels[r.status] || r.status}</span></div>
         <div class="v7-table-cell muted v7-hide-md">${fmtDate(new Date(r.created_at).getTime())}</div>
-        <div>${r.status === 'sent'
-          ? `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7CopyPedidoLink('${r.share_token}', this)">Copiar link</button>`
-          : (r.status === 'answered' || r.status === 'delivered'
-            ? `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7Go('respostas')">Ver resposta</button>`
-            : '')}
-        </div>
+        <div style="display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end;">${actions.join('')}</div>
       </div>
-    `).join('');
+    `; }).join('');
 
     root.innerHTML = `
       <div class="v7-screen-head">
@@ -10280,6 +10290,42 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     });
   }
   window.v7RenderPedidos = renderPedidos;
+
+  window.v7ArchivePedido = async function(id) {
+    const sb = window.sb;
+    const { error } = await sb.from('requests').update({ status: 'archived' }).eq('id', id);
+    if (error) {
+      if (typeof window.showToast === 'function') window.showToast('Falha ao arquivar o pedido.', 4000);
+      return;
+    }
+    if (typeof window.showToast === 'function') window.showToast('Pedido arquivado.', 2500);
+    renderPedidos();
+  };
+
+  window.v7DeletePedido = async function(id) {
+    if (!confirm('Excluir esse pedido? Essa ação não pode ser desfeita.')) return;
+    const sb = window.sb;
+    const { error } = await sb.from('requests').delete().eq('id', id);
+    if (error) {
+      if (typeof window.showToast === 'function') window.showToast('Falha ao excluir o pedido.', 4000);
+      return;
+    }
+    if (typeof window.showToast === 'function') window.showToast('Pedido excluído.', 2500);
+    renderPedidos();
+  };
+
+  window.v7RegenerateLink = async function(id) {
+    const sb = window.sb;
+    const newToken = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random())).replace(/-/g, '');
+    const { error } = await sb.from('requests').update({ share_token: newToken }).eq('id', id);
+    if (error) {
+      if (typeof window.showToast === 'function') window.showToast('Falha ao gerar novo link.', 4000);
+      return;
+    }
+    try { await navigator.clipboard.writeText(pedidoLink(newToken)); } catch (_) {}
+    if (typeof window.showToast === 'function') window.showToast('Novo link gerado e copiado. O link antigo parou de funcionar.', 3500);
+    renderPedidos();
+  };
 
   window.v7CopyPedidoLink = function(token, btn) {
     const link = pedidoLink(token);
