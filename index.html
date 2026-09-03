@@ -10308,7 +10308,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     const rows = RESPOSTAS.map(r => `
       <div class="v7-table-row resp-row" onclick="v7ShowResposta('${r.id}')">
         <div>
-          <div class="v7-table-title">${escapeXML(r.nomeDash || '—')}</div>
+          <div class="v7-table-title">${escapeXML(r.nomeDash || '—')}${r.status === 'delivered' ? ' <span style="font:500 .68rem var(--font-mono);color:var(--ok, #0f7a52);">· entregue</span>' : ''}</div>
           <div class="v7-table-id">${escapeXML(r.decisao || '').slice(0, 60)}</div>
         </div>
         <div class="v7-owner v7-hide-md">
@@ -10352,6 +10352,24 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     const tableRows = fields.map(k => detailRow(L[k], escapeXML(String(r[k] || '—')).replace(/\n/g,'<br>'))).join('');
     const paletteHtml = (r.paleta || []).map(c => `<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${c};margin-right:4px;vertical-align:middle;border:1px solid var(--border)"></span>`).join('');
 
+    const delivered = r.status === 'delivered';
+    const deliveryCard = `
+      <div class="v7-card" style="padding:1.4rem; margin-bottom:1rem;">
+        <div style="font:600 .85rem var(--font-sans); color:var(--text-strong); margin-bottom:.7rem;">
+          ${delivered ? (V7.lang==='pt'?'Dashboard entregue':'Dashboard delivered') : (V7.lang==='pt'?'Entrega do dashboard':'Dashboard delivery')}
+        </div>
+        ${delivered && r.dashboardUrl ? `
+          <a href="${escapeXML(r.dashboardUrl)}" target="_blank" rel="noopener" style="display:block; color:var(--brand); font-size:.85rem; word-break:break-all; margin-bottom:.8rem;">${escapeXML(r.dashboardUrl)}</a>
+        ` : ''}
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
+          <input id="deliveryUrlInput" type="url" placeholder="${V7.lang==='pt'?'Link do Power BI publicado':'Published Power BI link'}" value="${escapeXML(r.dashboardUrl || '')}"
+            style="flex:1; min-width:220px; padding:.6rem .75rem; border:var(--hairline); border-radius:9px; background:var(--bg); color:var(--text-strong); font:400 .88rem var(--font-sans);">
+          <button type="button" class="v7-btn" id="deliverySaveBtn" onclick="v7SaveDelivery('${r.id}')">
+            ${delivered ? (V7.lang==='pt'?'Atualizar link':'Update link') : (V7.lang==='pt'?'Marcar como entregue':'Mark as delivered')}
+          </button>
+        </div>
+      </div>`;
+
     root.innerHTML = `
       <div id="respostas-detail-view">
         <div class="v7-screen-head">
@@ -10365,12 +10383,34 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
           ${r.readinessSvg || ''}
           <div>Score: <strong>${r.readinessScore||0}/100</strong> · ${escapeXML(r.effortLabel||'—')} · ${escapeXML(r.usageLabel||'—')}</div>
         </div>
+        ${deliveryCard}
         ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
         <div class="v7-card" style="padding:.4rem 1.2rem;">
           ${detailRow(V7.lang==='pt'?'Paleta':'Palette', paletteHtml||'—')}
           ${tableRows}
         </div>
       </div>`;
+  };
+
+  window.v7SaveDelivery = async function(reqId) {
+    const input = $('#deliveryUrlInput');
+    const btn = $('#deliverySaveBtn');
+    const url = (input?.value || '').trim();
+    if (!url) return;
+    if (btn) { btn.disabled = true; }
+    const sb = window.sb;
+    const { error } = await sb.from('requests').update({
+      dashboard_url: url, status: 'delivered', delivered_at: new Date().toISOString(),
+    }).eq('id', reqId);
+    if (error) {
+      if (typeof window.showToast === 'function') window.showToast(V7.lang==='pt'?'Falha ao salvar o link.':'Failed to save the link.', 4000);
+      if (btn) { btn.disabled = false; }
+      return;
+    }
+    const r = RESPOSTAS.find(x => x.id === reqId);
+    if (r) { r.dashboardUrl = url; r.status = 'delivered'; }
+    if (typeof window.showToast === 'function') window.showToast(V7.lang==='pt'?'Dashboard marcado como entregue ✓':'Dashboard marked as delivered ✓', 3000);
+    window.v7ShowResposta(reqId);
   };
 
   window.v7BackToRespostas = function() { paintRespostasList(); };
