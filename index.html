@@ -4964,17 +4964,6 @@ body.v7-public-mode .v7-mob-nav { display:none !important; }
       </div>
     </header>
 
-    <!-- DASHBOARD SCREEN -->
-    <section class="v7-screen" data-screen="dashboard" data-screen-label="01 Dashboard"></section>
-
-    <!-- DEMANDS SCREEN -->
-    <section class="v7-screen" data-screen="demands" data-screen-label="02 Demands"></section>
-
-    <!-- ANALYTICS / WORKSPACE / SETTINGS (placeholder) -->
-    <section class="v7-screen" data-screen="analytics" data-screen-label="04 Analytics"></section>
-    <section class="v7-screen" data-screen="workspace" data-screen-label="05 Workspace"></section>
-    <section class="v7-screen" data-screen="settings" data-screen-label="06 Settings"></section>
-
     <!-- PEDIDOS SCREEN (create/list requests, backed by Supabase `requests`) -->
     <section class="v7-screen active" data-screen="pedidos" data-screen-label="02 Pedidos"></section>
 
@@ -10600,11 +10589,6 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     })();
 
     // Render all screens
-    renderDashboard();
-    renderDemands();
-    renderSoon('analytics');
-    renderSoon('workspace');
-    renderSoon('settings');
     renderRespostas();
     renderPedidos();
 
