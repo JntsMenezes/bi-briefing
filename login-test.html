@@ -81,7 +81,7 @@
 <script>
   const SUPABASE_URL = 'https://tovjamavkkcfbodmljhp.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_odelJJwlY0Z6uObcxdb6uA_jAbEHRfX';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const statusEl = document.getElementById('status');
   const googleBtn = document.getElementById('google-btn');
@@ -93,7 +93,7 @@
   }
 
   async function refreshSession() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabaseClient.auth.getSession();
     if (session) {
       googleBtn.style.display = 'none';
       logoutBtn.style.display = 'inline-flex';
@@ -109,7 +109,7 @@
   }
 
   googleBtn.addEventListener('click', async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.href }
     });
@@ -117,7 +117,7 @@
   });
 
   logoutBtn.addEventListener('click', async () => {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     statusEl.className = 'status';
     refreshSession();
   });
