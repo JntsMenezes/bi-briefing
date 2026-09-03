@@ -10349,7 +10349,12 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     if (!r || !root) return;
     const L = respLabels();
     const fields = ['nome','nomeDash','audiencia','freq','decisao','fonte','metricas','dimensoes','visuals','corHex','modoBI','urgencia','obs'];
-    const tableRows = fields.map(k => `<div class="v7-table-row"><div class="v7-table-cell muted">${L[k]}</div><div class="v7-table-cell">${escapeXML(String(r[k] || '—')).replace(/\n/g,'<br>')}</div></div>`).join('');
+    const detailRow = (label, valueHtml) => `
+      <div style="display:flex; gap:1.2rem; padding:.65rem 0; border-bottom:1px solid var(--border);">
+        <div style="flex:0 0 150px; color:var(--muted); font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; padding-top:.1rem;">${label}</div>
+        <div style="flex:1; min-width:0; color:var(--text); font-size:.9rem; line-height:1.55; white-space:normal; overflow-wrap:break-word;">${valueHtml}</div>
+      </div>`;
+    const tableRows = fields.map(k => detailRow(L[k], escapeXML(String(r[k] || '—')).replace(/\n/g,'<br>'))).join('');
     const paletteHtml = (r.paleta || []).map(c => `<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${c};margin-right:4px;vertical-align:middle;border:1px solid var(--border)"></span>`).join('');
 
     root.innerHTML = `
@@ -10367,7 +10372,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         </div>
         ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
         <div class="v7-card" style="padding:.4rem 1.2rem;">
-          <div class="v7-table-row"><div class="v7-table-cell muted">${V7.lang==='pt'?'Paleta':'Palette'}</div><div class="v7-table-cell">${paletteHtml||'—'}</div></div>
+          ${detailRow(V7.lang==='pt'?'Paleta':'Palette', paletteHtml||'—')}
           ${tableRows}
         </div>
       </div>`;
