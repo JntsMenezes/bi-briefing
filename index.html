@@ -4784,6 +4784,10 @@ body.dark .v7-screen-briefing {
 body.v7-public-mode .v7-sb { display:none; }
 body.v7-public-mode .v7-shell { grid-template-columns: 1fr; }
 body.v7-public-mode .v7-mob-nav { display:none !important; }
+/* Public link visitors never log in: hide the login screen from the first paint
+   instead of flashing it while get_request_by_token is in flight. */
+html.v7-public-boot .v7-login { display:none !important; }
+.v7-link-unavailable { padding: var(--shell-pad); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 
@@ -4806,7 +4810,10 @@ body.v7-public-mode .v7-mob-nav { display:none !important; }
     var m2 = location.pathname.match(/\/r\/([A-Za-z0-9_-]+)\/?$/);
     if (m2) token = m2[1];
   }
-  if (token) window.V7_PUBLIC_TOKEN = token;
+  if (token) {
+    window.V7_PUBLIC_TOKEN = token;
+    document.documentElement.classList.add('v7-public-boot');
+  }
 })();
 </script>
 
@@ -10828,7 +10835,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       const root = $('[data-screen="briefing"]');
       if (root) {
         root.innerHTML = `
-          <div class="v7-screen-head">
+          <div class="v7-screen-head v7-link-unavailable">
             <div>
               <h1 class="v7-screen-title">Link indisponível</h1>
               <div class="v7-screen-sub">Esse link já foi respondido ou não é válido.</div>
