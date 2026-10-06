@@ -5309,39 +5309,6 @@ html.v7-public-boot .v7-login { display:none !important; }
         </div>
 
         <div class="q-block">
-          <label class="q-label" for="v6_impacto" data-i18n="v6-f-impacto">Impacto esperado no negócio</label>
-          <div class="q-hint" data-i18n="v6-f-impacto-hint">Quantifique. R$, %, tempo, risco. Sem número aqui, ninguém prioriza esse projeto.</div>
-          <textarea id="v6_impacto" rows="2" data-i18n-ph="v6-ph-impacto" placeholder="Ex: Reduzir ruptura de 8% pra 4% em 90 dias = ~R$420k/mês de venda recuperada."></textarea>
-        </div>
-
-        <div class="q-block">
-          <label class="q-label" data-i18n="v6-f-maturidade">Maturidade da demanda</label>
-          <div class="q-hint" data-i18n="v6-f-maturidade-hint">Em que estágio você está com essa ideia? Define quanto refinamento ainda falta.</div>
-          <div class="v6-mat-chips">
-            <button type="button" class="v6-mat-chip" data-key="m-ide" data-val-pt="Ideia inicial" data-val-en="Initial idea">
-              <span class="v6-mat-num">01</span>
-              <span class="v6-mat-name">Ideia inicial</span>
-              <span class="v6-mat-desc">vaga, ainda não discutida</span>
-            </button>
-            <button type="button" class="v6-mat-chip" data-key="m-dis" data-val-pt="Em discussão" data-val-en="In discussion">
-              <span class="v6-mat-num">02</span>
-              <span class="v6-mat-name">Em discussão</span>
-              <span class="v6-mat-desc">conversada na área, sem decisão</span>
-            </button>
-            <button type="button" class="v6-mat-chip" data-key="m-val" data-val-pt="Validada com a área" data-val-en="Validated with the area">
-              <span class="v6-mat-num">03</span>
-              <span class="v6-mat-name">Validada</span>
-              <span class="v6-mat-desc">área concordou com o escopo</span>
-            </button>
-            <button type="button" class="v6-mat-chip" data-key="m-apr" data-val-pt="Aprovada pra desenvolvimento" data-val-en="Approved for dev">
-              <span class="v6-mat-num">04</span>
-              <span class="v6-mat-name">Aprovada</span>
-              <span class="v6-mat-desc">sponsor assinou — pode codar</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="q-block">
           <label class="q-label" data-i18n="f-hoje">Hoje, sem esse BI, como você resolve isso?</label>
           <div class="chips" id="chips-hoje">
             <div class="chip" data-key="hj-xl" data-val-pt="Excel manual" data-val-en="Manual Excel">Excel manual</div>
@@ -7991,6 +7958,9 @@ async function enviarResposta() {
     : '';
   const wireframeSvg = document.getElementById('wireframeContainer')?.innerHTML || '';
 
+  // v6 capture uses '—' for "not filled"; the database should get an empty value instead.
+  const v6Field = v => (v && v !== '—') ? v : '';
+
   let submitterName = '';
   try { submitterName = localStorage.getItem('biV7_userName') || ''; } catch (_) {}
 
@@ -8003,7 +7973,10 @@ async function enviarResposta() {
     excel_info: state.excelInfo || '', metricas: state.metricas || '', dimensoes: state.dimensoes || '',
     visuals: state.visuals || '', cor_hex: state.corHex || '', modo_bi: state.modoBI || '',
     acesso: state.acesso || '', urgencia: state.urgencia || '', nao_objetivos: state.naoObjetivos || '',
-    obs: state.obs || '', readiness_score: state.readinessScore || 0, effort_label: state.effortLabel || '',
+    obs: state.obs || '',
+    area: v6Field(state.v6Area), sponsor: v6Field(state.v6StakeholderMain), prioridade: v6Field(state.v6Prio),
+    kpi_principal: v6Field(state.v6KpiPrincipal), prazo: v6Field(state.v6Prazo), dependencias: v6Field(state.v6Deps),
+    readiness_score: state.readinessScore || 0, effort_label: state.effortLabel || '',
     usage_label: state.usageLabel || '',
     paleta: currentPalette.length ? [0, 2, 4, 6, 8, 10].map(i => currentPalette[i]) : [],
     readiness_svg: readinessSvg, wireframe_svg: wireframeSvg,
@@ -8541,8 +8514,7 @@ function v6CalcMaturity(){
   let kpi = 0;
   if (hasLong(s.v6KpiPrincipal, 8)) kpi += 60;
   else if (has(s.v6KpiPrincipal)) kpi += 30;
-  if (hasLong(s.metricas, 20)) kpi += 25;
-  if (hasLong(s.v6Impacto, 20)) kpi += 15;
+  if (hasLong(s.metricas, 20)) kpi += 40;
   kpi = Math.min(100, kpi);
 
   // 3. Disponibilidade de dados (fonte + acesso)
@@ -8734,7 +8706,7 @@ function v6BuildSummary(s, m){
   const owner = (s.v6Area && s.v6Area !== '—') ? s.v6Area : (s.audiencia && s.audiencia !== '—' ? s.audiencia : (isPt ? 'área a definir' : 'area TBD'));
   const decision = (s.decisao && s.decisao !== '—') ? s.decisao : '';
   const kpi = (s.v6KpiPrincipal && s.v6KpiPrincipal !== '—') ? s.v6KpiPrincipal : (isPt ? 'KPI a definir' : 'KPI TBD');
-  const impacto = (s.v6Impacto && s.v6Impacto !== '—') ? s.v6Impacto : '';
+  const impacto = (s.ancora && s.ancora !== '—') ? s.ancora : '';
   const prio = (s.v6Prio && s.v6Prio !== '—') ? s.v6Prio : '';
 
   if (isPt) {
@@ -8804,7 +8776,7 @@ function v6BuildInsights(s, m){
   }
 
   // Insight 3: Impacto vs urgencia
-  const hasImpact = s.v6Impacto && s.v6Impacto !== '—' && s.v6Impacto.length > 20;
+  const hasImpact = s.ancora && s.ancora !== '—' && s.ancora.length > 20;
   if (!hasImpact && (s.urgencia >= 4)) {
     out.push(isPt
       ? '<strong>Urgência alta sem impacto quantificado.</strong> "Pra ontem" sem número costuma ser ansiedade, não prioridade.'
@@ -8840,7 +8812,9 @@ function v6CaptureState(){
   if (typeof state === 'undefined') return;
   state.v6Area = getSelectedChipsLabel('v6-chips-area') || (getVal('v6_area_other') || '—');
   state.v6StakeholderMain = getVal('v6_stakeholder_main') || '—';
-  state.v6Prio = getSelectedChipsLabel('v6-chips-prio') || '—';
+  // Priority chips are .v6-prio-chip, not .chip, so getSelectedChipsLabel can't see them.
+  state.v6Prio = document.querySelector('#v6-chips-prio .v6-prio-chip.selected')
+    ?.getAttribute(lang==='pt' ? 'data-val-pt' : 'data-val-en') || '—';
   state.v6KpiPrincipal = getVal('v6_kpi_principal') || '—';
   state.v6Impacto = getVal('v6_impacto') || '—';
   state.v6Maturidade = (function(){
@@ -10142,6 +10116,11 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       nome: row.nome, nomeDash: row.nome_dash, audiencia: row.audiencia, freq: row.freq,
       decisao: row.decisao, fonte: row.fonte, metricas: row.metricas, dimensoes: row.dimensoes,
       visuals: row.visuals, corHex: row.cor_hex, modoBI: row.modo_bi, urgencia: row.urgencia, obs: row.obs,
+      stakeholders: row.stakeholders, biExistente: row.bi_existente, story: row.story, ancora: row.ancora,
+      resolveHoje: row.resolve_hoje, referencia: row.referencia, excelInfo: row.excel_info,
+      acesso: row.acesso, naoObjetivos: row.nao_objetivos,
+      area: row.area, sponsor: row.sponsor, prioridade: row.prioridade, kpiPrincipal: row.kpi_principal,
+      prazo: row.prazo, dependencias: row.dependencias,
       submitterName: row.submitter_name,
       submittedAt: row.answered_at ? new Date(row.answered_at).getTime() : new Date(row.created_at).getTime(),
       readinessScore: row.readiness_score, effortLabel: row.effort_label, usageLabel: row.usage_label,
@@ -10375,9 +10354,25 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   }
 
   const RESP_LABELS = {
-    pt: { nome:'Solicitante', nomeDash:'Nome do BI', audiencia:'Audiência', freq:'Frequência', decisao:'Decisão que move', fonte:'Fonte dos dados', metricas:'Métricas', dimensoes:'Filtros / Dimensões', visuals:'Visuais', corHex:'Cor primária', modoBI:'Modo preferido', urgencia:'Urgência', obs:'Observações' },
-    en: { nome:'Requester', nomeDash:'BI name', audiencia:'Audience', freq:'Frequency', decisao:'Decision it drives', fonte:'Data source', metricas:'Metrics', dimensoes:'Filters / Dimensions', visuals:'Visuals', corHex:'Primary color', modoBI:'Preferred mode', urgencia:'Urgency', obs:'Notes' },
+    pt: { nome:'Solicitante', area:'Área', sponsor:'Sponsor', nomeDash:'Nome do BI', audiencia:'Audiência', freq:'Frequência', stakeholders:'Outros envolvidos', biExistente:'BI existente',
+          story:'Contexto', decisao:'Decisão que move', ancora:'Se nunca for entregue', prioridade:'Prioridade', kpiPrincipal:'KPI principal', resolveHoje:'Como resolve hoje', referencia:'Referência',
+          fonte:'Fonte dos dados', excelInfo:'Detalhes do Excel', metricas:'Métricas', dimensoes:'Filtros / Dimensões', prazo:'Prazo', dependencias:'Dependências',
+          visuals:'Visuais', corHex:'Cor primária', modoBI:'Modo preferido',
+          acesso:'Acesso aos dados', urgencia:'Urgência', naoObjetivos:'Fora do escopo', obs:'Observações' },
+    en: { nome:'Requester', area:'Area', sponsor:'Sponsor', nomeDash:'BI name', audiencia:'Audience', freq:'Frequency', stakeholders:'Others involved', biExistente:'Existing BI',
+          story:'Context', decisao:'Decision it drives', ancora:'If never delivered', prioridade:'Priority', kpiPrincipal:'Main KPI', resolveHoje:'How it is solved today', referencia:'Reference',
+          fonte:'Data source', excelInfo:'Excel details', metricas:'Metrics', dimensoes:'Filters / Dimensions', prazo:'Deadline', dependencias:'Dependencies',
+          visuals:'Visuals', corHex:'Primary color', modoBI:'Preferred mode',
+          acesso:'Data access', urgencia:'Urgency', naoObjetivos:'Out of scope', obs:'Notes' },
   };
+  // Detail groups follow the brief's own steps, so the analyst reads it in the order it was written.
+  const RESP_GROUPS = [
+    { pt:'Identificação', en:'Identification', fields:['nome','area','sponsor','nomeDash','audiencia','freq','stakeholders','biExistente'] },
+    { pt:'A dor real', en:'The real pain', fields:['story','decisao','ancora','prioridade','kpiPrincipal','resolveHoje','referencia'] },
+    { pt:'Os dados', en:'The data', fields:['fonte','excelInfo','metricas','dimensoes','prazo','dependencias'] },
+    { pt:'O visual', en:'The visual', fields:['visuals','corHex','modoBI'] },
+    { pt:'Viabilidade', en:'Feasibility', fields:['acesso','urgencia','naoObjetivos','obs'] },
+  ];
   function respLabels() { return RESP_LABELS[V7.lang] || RESP_LABELS.en; }
 
   window.v7ShowResposta = function(id) {
@@ -10385,14 +10380,24 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     const root = $('[data-screen="respostas"]');
     if (!r || !root) return;
     const L = respLabels();
-    const fields = ['nome','nomeDash','audiencia','freq','decisao','fonte','metricas','dimensoes','visuals','corHex','modoBI','urgencia','obs'];
+    const filled = v => v != null && String(v).trim() !== '' && v !== '—';
     const detailRow = (label, valueHtml) => `
       <div style="display:flex; gap:1.2rem; padding:.65rem 0; border-bottom:1px solid var(--border);">
         <div style="flex:0 0 150px; color:var(--muted); font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; padding-top:.1rem;">${label}</div>
         <div style="flex:1; min-width:0; color:var(--text); font-size:.9rem; line-height:1.55; white-space:normal; overflow-wrap:break-word;">${valueHtml}</div>
       </div>`;
-    const tableRows = fields.map(k => detailRow(L[k], escapeXML(String(r[k] || '—')).replace(/\n/g,'<br>'))).join('');
     const paletteHtml = (r.paleta || []).map(c => `<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${c};margin-right:4px;vertical-align:middle;border:1px solid var(--border)"></span>`).join('');
+    const groupsHtml = RESP_GROUPS.map(g => {
+      const rows = g.fields.filter(k => filled(r[k]))
+        .map(k => detailRow(L[k], escapeXML(String(r[k])).replace(/\n/g,'<br>')));
+      if (g.fields.includes('modoBI') && paletteHtml) rows.push(detailRow(V7.lang==='pt'?'Paleta':'Palette', paletteHtml));
+      if (!rows.length) return '';
+      return `
+        <div class="v7-card" style="padding:.4rem 1.2rem; margin-bottom:1rem;">
+          <div style="font:600 .85rem var(--font-sans); color:var(--text-strong); padding:.9rem 0 .4rem;">${V7.lang==='pt' ? g.pt : g.en}</div>
+          ${rows.join('')}
+        </div>`;
+    }).join('');
 
     const delivered = r.status === 'delivered';
     const deliveryCard = `
@@ -10427,10 +10432,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         </div>
         ${deliveryCard}
         ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
-        <div class="v7-card" style="padding:.4rem 1.2rem;">
-          ${detailRow(V7.lang==='pt'?'Paleta':'Palette', paletteHtml||'—')}
-          ${tableRows}
-        </div>
+        ${groupsHtml}
       </div>`;
   };
 
