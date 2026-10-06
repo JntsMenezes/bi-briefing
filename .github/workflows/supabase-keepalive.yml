@@ -1,0 +1,23 @@
+# Supabase free projects pause after ~7 days without activity.
+# This pings the database once a day so the project stays awake.
+# The publishable key is public by design (it's already in index.html).
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # every day at 11:00 UTC (08:00 Brasília)
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query the database via public RPC
+        run: |
+          code=$(curl -s -o response.txt -w "%{http_code}" -X POST \
+            -H "apikey: sb_publishable_odelJJwlY0Z6uObcxdb6uA_jAbEHRfX" \
+            -H "Content-Type: application/json" \
+            -d '{"p_token":"keepalive"}' \
+            https://tovjamavkkcfbodmljhp.supabase.co/rest/v1/rpc/get_request_by_token)
+          echo "HTTP $code"; cat response.txt; echo
+          test "$code" = "200"
