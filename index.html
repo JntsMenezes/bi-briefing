@@ -4787,6 +4787,56 @@ body.v7-public-mode .v7-mob-nav { display:none !important; }
 /* Public link visitors never log in: hide the login screen from the first paint
    instead of flashing it while get_request_by_token is in flight. */
 html.v7-public-boot .v7-login { display:none !important; }
+
+/* Pedidos: tabs by status, list, detail */
+.v7-ped-tabs { display:flex; gap:.35rem; margin:-.6rem 0 1.1rem; box-shadow:inset 0 -1px 0 var(--border); overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
+.v7-ped-tabs::-webkit-scrollbar { display:none; }
+.v7-ped-tab {
+  appearance:none; background:none; border:0; border-bottom:2px solid transparent;
+  padding:.6rem .8rem; font:500 .86rem var(--font-sans); color:var(--muted); cursor:pointer;
+  display:inline-flex; align-items:center; gap:.45rem; white-space:nowrap; transition:color .15s, border-color .15s;
+}
+.v7-ped-tab:hover { color:var(--text-strong); }
+.v7-ped-tab.active { color:var(--text-strong); border-bottom-color:var(--brand); }
+.v7-ped-tab-n { font:500 .68rem var(--font-mono); color:var(--muted); background:var(--surface-2); border-radius:100px; padding:.1rem .45rem; }
+.v7-ped-tab.active .v7-ped-tab-n { color:var(--brand); }
+.v7-table-row.v7-ped-row { grid-template-columns:minmax(0,2fr) 150px 130px auto; cursor:default; }
+.v7-table-row.v7-ped-row.is-open { cursor:pointer; }
+.v7-ped-badge { font:500 .72rem var(--font-mono); padding:.25rem .6rem; border-radius:100px; border:var(--hairline); color:var(--muted); white-space:nowrap; }
+.v7-ped-acts { display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end; }
+.v7-ped-act { padding:.4rem .7rem; font-size:.78rem; }
+#v7-new-pedido-btn { white-space:nowrap; }
+.v7-ped-card { padding:1.3rem 1.4rem; margin-bottom:1rem; }
+.v7-ped-score { display:flex; align-items:center; gap:1.4rem; }
+.v7-ped-score svg { width:72px; height:72px; flex:none; }
+.v7-ped-group { padding:.4rem 1.2rem; margin-bottom:1rem; }
+.v7-ped-group-title { font:600 .85rem var(--font-sans); color:var(--text-strong); padding:.5rem 0 .45rem; }
+.v7-ped-group > .v7-ped-group-title { padding-top:.9rem; }
+.v7-ped-field { display:flex; gap:1.2rem; padding:.65rem 0; border-top:var(--hairline); }
+.v7-ped-field-k { flex:0 0 160px; color:var(--muted); font:400 .72rem var(--font-mono); text-transform:uppercase; letter-spacing:.04em; padding-top:.15rem; }
+.v7-ped-field-v { flex:1; min-width:0; color:var(--text); font-size:.9rem; line-height:1.55; overflow-wrap:break-word; }
+.v7-ped-swatch { display:inline-block; width:20px; height:20px; border-radius:4px; margin-right:4px; vertical-align:middle; border:var(--hairline); }
+.v7-ped-link { display:block; color:var(--brand); font-size:.85rem; word-break:break-all; margin-bottom:.8rem; }
+.v7-ped-delivery { display:flex; gap:.6rem; flex-wrap:wrap; }
+.v7-ped-delivery input {
+  flex:1; min-width:220px; padding:.6rem .75rem; border:var(--hairline); border-radius:9px;
+  background:var(--bg); color:var(--text-strong); font:400 .88rem var(--font-sans);
+}
+.v7-ped-timeline { list-style:none; margin:0 0 1rem; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; }
+.v7-ped-timeline li { position:relative; padding:.2rem 0 0 1.3rem; display:flex; flex-direction:column; gap:.15rem; }
+.v7-ped-dot { position:absolute; left:0; top:.45rem; width:9px; height:9px; border-radius:50%; border:1.5px solid var(--border-strong); background:var(--bg); }
+.v7-ped-timeline li.done .v7-ped-dot { background:var(--brand); border-color:var(--brand); }
+.v7-ped-step { font:500 .82rem var(--font-sans); color:var(--muted); }
+.v7-ped-timeline li.done .v7-ped-step { color:var(--text-strong); }
+.v7-ped-when { font:400 .7rem var(--font-mono); color:var(--muted); }
+@media (max-width: 880px) {
+  .v7-table-row.v7-ped-row { grid-template-columns:minmax(0,1fr) auto; }
+  .v7-table-row.v7-ped-row.head { display:none; }
+  .v7-ped-acts { grid-column:1 / -1; justify-content:flex-start; }
+  .v7-ped-field { flex-direction:column; gap:.2rem; }
+  .v7-ped-field-k { flex:none; }
+  .v7-ped-timeline { grid-template-columns:1fr; }
+}
 .v7-link-unavailable { padding: var(--shell-pad); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -4895,11 +4945,7 @@ html.v7-public-boot .v7-login { display:none !important; }
       <button class="v7-sb-link active" type="button" data-target="pedidos" onclick="v7Go('pedidos')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         <span class="v7-sb-link-text" data-v7i18n="sb-pedidos">Pedidos</span>
-      </button>
-      <button class="v7-sb-link" type="button" data-target="respostas" onclick="v7Go('respostas')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
-        <span class="v7-sb-link-text" data-v7i18n="sb-respostas">Respostas recebidas</span>
-        <span class="v7-sb-badge" id="respostasBadge" hidden>0</span>
+        <span class="v7-sb-badge" id="pedidosBadge" hidden>0</span>
       </button>
     </nav>
 
@@ -4973,9 +5019,6 @@ html.v7-public-boot .v7-login { display:none !important; }
 
     <!-- PEDIDOS SCREEN (create/list requests, backed by Supabase `requests`) -->
     <section class="v7-screen active" data-screen="pedidos" data-screen-label="02 Pedidos"></section>
-
-    <!-- RESPOSTAS SCREEN (answered requests, backed by Supabase `requests`) -->
-    <section class="v7-screen" data-screen="respostas" data-screen-label="02 Respostas"></section>
 
     <!-- BRIEFING SCREEN (wraps existing v6 form intact) — only reachable via the
          public /r/{token} link now; internal nav no longer routes here. -->
@@ -9556,6 +9599,8 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
 
   /* ─── ROUTING ─── */
   function go(screen) {
+    // Received briefs now live inside Pedidos; keep old links/buttons working.
+    if (screen === 'respostas') screen = 'pedidos';
     V7.screen = screen;
     $$('.v7-screen').forEach(s => s.classList.toggle('active', s.dataset.screen === screen));
     $$('.v7-sb-link').forEach(l => l.classList.toggle('active', l.dataset.target === screen));
@@ -9566,9 +9611,6 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     $('.v7-shell')?.classList.remove('mobile-open');
     // Sync mobile bottom nav active state
     if (typeof window._v7MobNavSync === 'function') window._v7MobNavSync(screen);
-    if (screen === 'respostas') {
-      renderRespostas();
-    }
     if (screen === 'pedidos') {
       renderPedidos();
     }
@@ -10101,18 +10143,67 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     return name.split(' ').slice(0,2).map(n => n[0]).join('').toUpperCase();
   }
 
-  /* ─── RENDER: RESPOSTAS (answered requests, backed by Supabase `requests`) ─── */
-  let RESPOSTAS = [];
-  let respostasChannel = null;
+  /* ─── PEDIDOS (one screen: tabs by status, detail with brief + delivery) ─── */
+  let PEDIDOS = [];
+  let pedidosChannel = null;
+  let pedidosTab = null;          // 'sent' | 'answered' | 'delivered' | 'archived'
+  let pedidoOpenId = null;        // id of the request whose detail is open
+
+  const PEDIDO_TXT = {
+    pt: {
+      title: 'Pedidos', sub: 'Crie um link e envie para o solicitante descrever o dashboard que precisa.',
+      create: '+ Novo pedido', createFail: 'Falha ao criar o pedido.', created: 'Pedido criado. Link copiado.',
+      tabs: { sent: 'Aguardando', answered: 'Recebidos', delivered: 'Entregues', archived: 'Arquivados' },
+      status: { draft: 'Rascunho', sent: 'Aguardando briefing', answered: 'Briefing recebido', delivered: 'Entregue', archived: 'Arquivado' },
+      colPedido: 'Pedido', colStatus: 'Situação', colDate: 'Data', untitled: 'Pedido sem título', noRequester: 'Briefing ainda não enviado',
+      empty: { sent: 'Nenhum pedido aguardando briefing.', answered: 'Nenhum briefing recebido esperando entrega.', delivered: 'Nenhum pedido entregue ainda.', archived: 'Nenhum pedido arquivado.' },
+      emptyAll: 'Nenhum pedido ainda', emptyAllSub: 'Clique em "Novo pedido" para gerar o primeiro link.',
+      noWs: 'Sem acesso a um workspace', noWsSub: 'Sua conta ainda não está vinculada a um workspace.',
+      copy: 'Copiar link', copied: 'Copiado ✓', regen: 'Gerar novo link', open: 'Abrir', archive: 'Arquivar', unarchive: 'Desarquivar', del: 'Excluir',
+      regenDone: 'Novo link gerado e copiado. O link antigo parou de funcionar.', regenFail: 'Falha ao gerar novo link.',
+      archived: 'Pedido arquivado.', archiveFail: 'Falha ao arquivar o pedido.',
+      unarchived: 'Pedido desarquivado.', unarchiveFail: 'Falha ao desarquivar o pedido.',
+      delConfirm: 'Excluir esse pedido? Essa ação não pode ser desfeita.', deleted: 'Pedido excluído.', delFail: 'Falha ao excluir o pedido.',
+      back: 'Voltar para os pedidos', timeline: { created: 'Link criado', answered: 'Briefing recebido', delivered: 'Entregue' },
+      score: 'Score de prontidão', delivery: 'Entrega do dashboard', deliveryDone: 'Dashboard entregue',
+      deliveryPh: 'Link do Power BI publicado', deliveryPhUpdate: 'Colar novo link pra atualizar',
+      markDelivered: 'Marcar como entregue', updateLink: 'Atualizar link',
+      pasteFirst: 'Cole um link antes de salvar.', saveFail: 'Falha ao salvar o link.', saved: 'Pedido marcado como entregue ✓',
+      palette: 'Paleta',
+    },
+    en: {
+      title: 'Requests', sub: 'Create a link and send it to the requester to describe the dashboard they need.',
+      create: '+ New request', createFail: 'Could not create the request.', created: 'Request created. Link copied.',
+      tabs: { sent: 'Awaiting', answered: 'Received', delivered: 'Delivered', archived: 'Archived' },
+      status: { draft: 'Draft', sent: 'Awaiting brief', answered: 'Brief received', delivered: 'Delivered', archived: 'Archived' },
+      colPedido: 'Request', colStatus: 'Status', colDate: 'Date', untitled: 'Untitled request', noRequester: 'Brief not submitted yet',
+      empty: { sent: 'No requests awaiting a brief.', answered: 'No received briefs waiting for delivery.', delivered: 'No delivered requests yet.', archived: 'No archived requests.' },
+      emptyAll: 'No requests yet', emptyAllSub: 'Click "New request" to generate your first link.',
+      noWs: 'No workspace access', noWsSub: 'Your account is not linked to a workspace yet.',
+      copy: 'Copy link', copied: 'Copied ✓', regen: 'New link', open: 'Open', archive: 'Archive', unarchive: 'Unarchive', del: 'Delete',
+      regenDone: 'New link generated and copied. The old link no longer works.', regenFail: 'Could not generate a new link.',
+      archived: 'Request archived.', archiveFail: 'Could not archive the request.',
+      unarchived: 'Request unarchived.', unarchiveFail: 'Could not unarchive the request.',
+      delConfirm: 'Delete this request? This cannot be undone.', deleted: 'Request deleted.', delFail: 'Could not delete the request.',
+      back: 'Back to requests', timeline: { created: 'Link created', answered: 'Brief received', delivered: 'Delivered' },
+      score: 'Readiness score', delivery: 'Dashboard delivery', deliveryDone: 'Dashboard delivered',
+      deliveryPh: 'Published Power BI link', deliveryPhUpdate: 'Paste a new link to update',
+      markDelivered: 'Mark as delivered', updateLink: 'Update link',
+      pasteFirst: 'Paste a link before saving.', saveFail: 'Could not save the link.', saved: 'Request marked as delivered ✓',
+      palette: 'Palette',
+    },
+  };
+  function pt() { return PEDIDO_TXT[V7.lang] || PEDIDO_TXT.pt; }
+  function toast(msg, ms) { if (typeof window.showToast === 'function') window.showToast(msg, ms || 3000); }
 
   function fmtDate(ts) {
-    try { return new Date(ts).toLocaleString(V7.lang === 'pt' ? 'pt-BR' : V7.lang === 'es' ? 'es-ES' : V7.lang === 'zh' ? 'zh-CN' : 'en-US'); }
+    try { return new Date(ts).toLocaleString(V7.lang === 'en' ? 'en-US' : 'pt-BR', { dateStyle: 'short', timeStyle: 'short' }); }
     catch (_) { return ''; }
   }
 
   function mapRequestRow(row) {
     return {
-      id: row.id,
+      id: row.id, shareToken: row.share_token, status: row.status,
       nome: row.nome, nomeDash: row.nome_dash, audiencia: row.audiencia, freq: row.freq,
       decisao: row.decisao, fonte: row.fonte, metricas: row.metricas, dimensoes: row.dimensoes,
       visuals: row.visuals, corHex: row.cor_hex, modoBI: row.modo_bi, urgencia: row.urgencia, obs: row.obs,
@@ -10122,236 +10213,214 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       area: row.area, sponsor: row.sponsor, prioridade: row.prioridade, kpiPrincipal: row.kpi_principal,
       prazo: row.prazo, dependencias: row.dependencias,
       submitterName: row.submitter_name,
-      submittedAt: row.answered_at ? new Date(row.answered_at).getTime() : new Date(row.created_at).getTime(),
+      createdAt: row.created_at, answeredAt: row.answered_at, deliveredAt: row.delivered_at,
       readinessScore: row.readiness_score, effortLabel: row.effort_label, usageLabel: row.usage_label,
       readinessSvg: row.readiness_svg, wireframeSvg: row.wireframe_svg, paleta: row.paleta,
-      status: row.status, dashboardUrl: row.dashboard_url,
+      dashboardUrl: row.dashboard_url,
     };
   }
 
-  async function renderRespostas() {
-    const root = $('[data-screen="respostas"]');
-    if (!root) return;
+  // A brief exists once the requester submitted it, even if the request was archived afterwards.
+  function hasBrief(r) { return !!r.answeredAt; }
+  // Where an archived request goes back to: the furthest stage it had reached.
+  function unarchivedStatus(r) { return r.dashboardUrl ? 'delivered' : (r.answeredAt ? 'answered' : 'sent'); }
 
-    root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
-
-    const sb = window.sb;
-    const wsId = window.V7_WORKSPACE_ID;
-    if (!sb || !wsId) {
-      root.innerHTML = `
-        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div></div>
-        <div class="v7-card" style="padding:3rem 1.5rem;">
-          <div class="v7-empty">${V7_ICON.inbox}<h4>${tt('resp-unavailable')}</h4></div>
-        </div>`;
-      return;
-    }
-
-    async function load() {
-      const { data, error } = await sb.from('requests')
-        .select('*')
-        .eq('workspace_id', wsId)
-        .in('status', ['answered', 'delivered'])
-        .order('answered_at', { ascending: false })
-        .limit(200);
-      RESPOSTAS = error ? [] : (data || []).map(mapRequestRow);
-      const badge = $('#respostasBadge');
-      if (badge) {
-        badge.hidden = RESPOSTAS.length === 0;
-        badge.textContent = RESPOSTAS.length;
-      }
-      if ($('#respostas-detail-view')) return; // don't clobber an open detail
-      paintRespostasList(root);
-    }
-
-    if (respostasChannel) { sb.removeChannel(respostasChannel); respostasChannel = null; }
-    respostasChannel = sb.channel('requests-changes-' + wsId)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'requests', filter: `workspace_id=eq.${wsId}` }, load)
-      .subscribe();
-
-    await load();
+  function updatePedidosBadge() {
+    const badge = $('#pedidosBadge');
+    if (!badge) return;
+    const n = PEDIDOS.filter(r => r.status === 'answered').length;
+    badge.hidden = n === 0;
+    badge.textContent = n;
   }
-  window.v7RenderRespostas = renderRespostas;
 
-  /* ─── RENDER: PEDIDOS (create/list requests + share link) ─── */
-  function pedidoLink(token) { return (window.v7PedidoLink ? window.v7PedidoLink(token) : token); }
+  async function loadPedidos() {
+    const sb = window.sb, wsId = window.V7_WORKSPACE_ID;
+    const { data, error } = await sb.from('requests')
+      .select('*')
+      .eq('workspace_id', wsId)
+      .order('created_at', { ascending: false })
+      .limit(300);
+    PEDIDOS = error ? [] : (data || []).map(mapRequestRow);
+    updatePedidosBadge();
+  }
 
   async function renderPedidos() {
     const root = $('[data-screen="pedidos"]');
     if (!root) return;
-
-    root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
-
-    const sb = window.sb;
-    const wsId = window.V7_WORKSPACE_ID;
+    const T = pt();
+    const sb = window.sb, wsId = window.V7_WORKSPACE_ID;
     if (!sb || !wsId) {
       root.innerHTML = `
-        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-pedidos') || 'Pedidos'}</h1></div></div>
+        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${T.title}</h1></div></div>
         <div class="v7-card" style="padding:3rem 1.5rem;">
-          <div class="v7-empty">${V7_ICON.inbox}<h4>Sem acesso a um workspace</h4><p>Sua conta ainda não está vinculada a um workspace.</p></div>
+          <div class="v7-empty">${V7_ICON.inbox}<h4>${T.noWs}</h4><p>${T.noWsSub}</p></div>
         </div>`;
       return;
     }
 
-    const { data, error } = await sb.from('requests')
-      .select('id, share_token, status, created_at, sent_at, answered_at, nome_dash, submitter_name')
-      .eq('workspace_id', wsId)
-      .neq('status', 'archived')
-      .order('created_at', { ascending: false })
-      .limit(100);
-    const list = error ? [] : (data || []);
+    if (!PEDIDOS.length) root.innerHTML = `<div class="v7-empty" style="padding:3.5rem 1.5rem;"><p>${tt('resp-loading')}</p></div>`;
+    await loadPedidos();
 
-    const statusLabels = { draft: 'Rascunho', sent: 'Aguardando resposta', answered: 'Respondido', delivered: 'Entregue', archived: 'Arquivado' };
-    const badgeStyle = 'font:500 .72rem var(--font-mono);padding:.25rem .6rem;border-radius:100px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;';
-    const actionBtn = (label, onclick) => `<button type="button" class="v7-btn v7-btn-secondary" style="padding:.4rem .7rem; font-size:.78rem;" onclick="${onclick}">${label}</button>`;
+    if (!pedidosChannel) {
+      pedidosChannel = sb.channel('requests-changes-' + wsId)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'requests', filter: `workspace_id=eq.${wsId}` }, async () => {
+          await loadPedidos();
+          if (V7.screen !== 'pedidos') return;
+          if (pedidoOpenId) {
+            // Don't wipe a half-typed delivery link; only repaint when the field is empty.
+            if (!($('#deliveryUrlInput')?.value)) paintPedidoDetail(pedidoOpenId);
+          } else paintPedidosList();
+        })
+        .subscribe();
+    }
+
+    if (pedidoOpenId && PEDIDOS.some(r => r.id === pedidoOpenId)) paintPedidoDetail(pedidoOpenId);
+    else { pedidoOpenId = null; paintPedidosList(); }
+  }
+  window.v7RenderPedidos = renderPedidos;
+  // Kept so older callers (boot, realtime) keep working: received briefs now live inside Pedidos.
+  window.v7RenderRespostas = function() { return loadPedidos(); };
+
+  function paintPedidosList() {
+    const root = $('[data-screen="pedidos"]');
+    if (!root) return;
+    const T = pt();
+    const counts = { sent: 0, answered: 0, delivered: 0, archived: 0 };
+    PEDIDOS.forEach(r => { if (counts[r.status] != null) counts[r.status]++; });
+    if (!pedidosTab) pedidosTab = counts.answered ? 'answered' : 'sent';
+
+    const tabs = ['sent', 'answered', 'delivered', 'archived'].map(k => `
+      <button type="button" class="v7-ped-tab${k === pedidosTab ? ' active' : ''}" onclick="v7PedidosTab('${k}')">
+        ${T.tabs[k]}<span class="v7-ped-tab-n">${counts[k]}</span>
+      </button>`).join('');
+
+    const list = PEDIDOS.filter(r => r.status === pedidosTab);
+    const btn = (label, onclick) => `<button type="button" class="v7-btn v7-btn-secondary v7-ped-act" onclick="event.stopPropagation(); ${onclick}">${label}</button>`;
 
     const rows = list.map(r => {
       const actions = [];
       if (r.status === 'sent') {
-        actions.push(actionBtn('Copiar link', `v7CopyPedidoLink('${r.share_token}', this)`));
-        actions.push(actionBtn('Regenerar link', `v7RegenerateLink('${r.id}')`));
+        actions.push(btn(T.copy, `v7CopyPedidoLink('${r.shareToken}', this)`));
+        actions.push(btn(T.regen, `v7RegenerateLink('${r.id}')`));
+        actions.push(btn(T.archive, `v7ArchivePedido('${r.id}')`));
+        actions.push(btn(T.del, `v7DeletePedido('${r.id}')`));
+      } else if (r.status === 'archived') {
+        actions.push(btn(T.unarchive, `v7UnarchivePedido('${r.id}')`));
+        if (!hasBrief(r)) actions.push(btn(T.del, `v7DeletePedido('${r.id}')`));
+      } else {
+        actions.push(btn(T.archive, `v7ArchivePedido('${r.id}')`));
       }
-      if (r.status === 'answered' || r.status === 'delivered') {
-        actions.push(actionBtn('Ver resposta', `v7Go('respostas')`));
-      }
-      if (r.status === 'draft' || r.status === 'sent') {
-        actions.push(actionBtn('Excluir', `v7DeletePedido('${r.id}')`));
-      }
-      actions.push(actionBtn('Arquivar', `v7ArchivePedido('${r.id}')`));
+      const openable = hasBrief(r);
+      const date = r.deliveredAt && r.status === 'delivered' ? r.deliveredAt : (r.answeredAt || r.createdAt);
       return `
-      <div class="v7-table-row">
-        <div>
-          <div class="v7-table-title">${escapeXML(r.nome_dash || 'Pedido sem título')}</div>
-          <div class="v7-table-id">${escapeXML(r.submitter_name || '—')}</div>
+      <div class="v7-table-row v7-ped-row${openable ? ' is-open' : ''}" ${openable ? `onclick="v7OpenPedido('${r.id}')"` : ''}>
+        <div style="min-width:0;">
+          <div class="v7-table-title">${escapeXML(r.nomeDash || T.untitled)}</div>
+          <div class="v7-table-id">${escapeXML(r.submitterName || T.noRequester)}${r.area ? ' · ' + escapeXML(r.area) : ''}</div>
         </div>
-        <div><span style="${badgeStyle}">${statusLabels[r.status] || r.status}</span></div>
-        <div class="v7-table-cell muted v7-hide-md">${fmtDate(new Date(r.created_at).getTime())}</div>
-        <div style="display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end;">${actions.join('')}</div>
-      </div>
-    `; }).join('');
+        <div>${openable && r.status !== 'archived' ? scoreChip(r.readinessScore || 0) : `<span class="v7-ped-badge">${T.status[r.status] || r.status}</span>`}</div>
+        <div class="v7-table-cell muted v7-hide-md">${fmtDate(date)}</div>
+        <div class="v7-ped-acts">${actions.join('')}</div>
+      </div>`;
+    }).join('');
+
+    const body = !PEDIDOS.length ? `
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>${T.emptyAll}</h4><p>${T.emptyAllSub}</p></div>
+        </div>`
+      : !list.length ? `
+        <div class="v7-card" style="padding:2.4rem 1.5rem;"><div class="v7-empty"><p>${T.empty[pedidosTab]}</p></div></div>`
+      : `
+        <div class="v7-table">
+          <div class="v7-table-row v7-ped-row head"><div>${T.colPedido}</div><div>${pedidosTab === 'sent' || pedidosTab === 'archived' ? T.colStatus : 'Score'}</div><div class="v7-hide-md">${T.colDate}</div><div></div></div>
+          ${rows}
+        </div>`;
 
     root.innerHTML = `
       <div class="v7-screen-head">
         <div>
-          <h1 class="v7-screen-title">${tt('sb-pedidos') || 'Pedidos'}</h1>
-          <div class="v7-screen-sub">Crie um link e envie para quem vai descrever a demanda de BI.</div>
+          <h1 class="v7-screen-title">${T.title}</h1>
+          <div class="v7-screen-sub">${T.sub}</div>
         </div>
-        <div><button type="button" class="v7-btn v7-btn-primary" id="v7-new-pedido-btn">+ Criar novo pedido</button></div>
+        <div><button type="button" class="v7-btn v7-btn-primary" id="v7-new-pedido-btn">${T.create}</button></div>
       </div>
-      ${list.length ? `
-        <div class="v7-table">
-          <div class="v7-table-row head"><div>Pedido</div><div>Status</div><div class="v7-hide-md">Criado</div><div></div></div>
-          ${rows}
-        </div>` : `
-        <div class="v7-card" style="padding:3rem 1.5rem;">
-          <div class="v7-empty">${V7_ICON.inbox}<h4>Nenhum pedido ainda</h4><p>Clique em "Criar novo pedido" para gerar seu primeiro link.</p></div>
-        </div>`}
-    `;
+      <div class="v7-ped-tabs" role="tablist">${tabs}</div>
+      ${body}`;
 
-    $('#v7-new-pedido-btn')?.addEventListener('click', async () => {
-      const btn = $('#v7-new-pedido-btn');
-      if (btn) btn.disabled = true;
-      const { data: created, error: createErr } = await sb.from('requests').insert({
-        workspace_id: wsId, org_id: window.V7_ORG_ID, created_by: window.V7_USER_ID,
-        status: 'sent', sent_at: new Date().toISOString(),
-      }).select('id, share_token').single();
-      if (createErr || !created) {
-        if (typeof window.showToast === 'function') window.showToast('Falha ao criar pedido.', 4000);
-        if (btn) btn.disabled = false;
-        return;
-      }
-      await renderPedidos();
-      try { await navigator.clipboard.writeText(pedidoLink(created.share_token)); } catch (_) {}
-      if (typeof window.showToast === 'function') window.showToast('Pedido criado! Link copiado.', 3000);
-    });
+    $('#v7-new-pedido-btn')?.addEventListener('click', createPedido);
   }
-  window.v7RenderPedidos = renderPedidos;
 
-  window.v7ArchivePedido = async function(id) {
-    const sb = window.sb;
-    const { error } = await sb.from('requests').update({ status: 'archived' }).eq('id', id);
-    if (error) {
-      if (typeof window.showToast === 'function') window.showToast('Falha ao arquivar o pedido.', 4000);
-      return;
-    }
-    if (typeof window.showToast === 'function') window.showToast('Pedido arquivado.', 2500);
-    renderPedidos();
+  window.v7PedidosTab = function(k) { pedidosTab = k; paintPedidosList(); };
+
+  async function createPedido() {
+    const T = pt();
+    const btn = $('#v7-new-pedido-btn');
+    if (btn) btn.disabled = true;
+    const { data: created, error } = await window.sb.from('requests').insert({
+      workspace_id: window.V7_WORKSPACE_ID, org_id: window.V7_ORG_ID, created_by: window.V7_USER_ID,
+      status: 'sent', sent_at: new Date().toISOString(),
+    }).select('id, share_token').single();
+    if (error || !created) { toast(T.createFail, 4000); if (btn) btn.disabled = false; return; }
+    try { await navigator.clipboard.writeText(pedidoLink(created.share_token)); } catch (_) {}
+    pedidosTab = 'sent';
+    await loadPedidos();
+    paintPedidosList();
+    toast(T.created);
+  }
+
+  function pedidoLink(token) { return (window.v7PedidoLink ? window.v7PedidoLink(token) : token); }
+
+  async function updatePedido(id, patch, okMsg, failMsg) {
+    const { error } = await window.sb.from('requests').update(patch).eq('id', id);
+    if (error) { toast(failMsg, 4000); return false; }
+    await loadPedidos();
+    if (pedidoOpenId) paintPedidoDetail(pedidoOpenId); else paintPedidosList();
+    toast(okMsg, 2500);
+    return true;
+  }
+
+  window.v7ArchivePedido = function(id) {
+    const T = pt();
+    return updatePedido(id, { status: 'archived' }, T.archived, T.archiveFail);
+  };
+
+  window.v7UnarchivePedido = function(id) {
+    const T = pt();
+    const r = PEDIDOS.find(x => x.id === id);
+    if (!r) return;
+    return updatePedido(id, { status: unarchivedStatus(r) }, T.unarchived, T.unarchiveFail);
   };
 
   window.v7DeletePedido = async function(id) {
-    if (!confirm('Excluir esse pedido? Essa ação não pode ser desfeita.')) return;
-    const sb = window.sb;
-    const { error } = await sb.from('requests').delete().eq('id', id);
-    if (error) {
-      if (typeof window.showToast === 'function') window.showToast('Falha ao excluir o pedido.', 4000);
-      return;
-    }
-    if (typeof window.showToast === 'function') window.showToast('Pedido excluído.', 2500);
-    renderPedidos();
+    const T = pt();
+    if (!confirm(T.delConfirm)) return;
+    const { error } = await window.sb.from('requests').delete().eq('id', id);
+    if (error) { toast(T.delFail, 4000); return; }
+    toast(T.deleted, 2500);
+    await loadPedidos();
+    paintPedidosList();
   };
 
   window.v7RegenerateLink = async function(id) {
-    const sb = window.sb;
+    const T = pt();
     const newToken = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random())).replace(/-/g, '');
-    const { error } = await sb.from('requests').update({ share_token: newToken }).eq('id', id);
-    if (error) {
-      if (typeof window.showToast === 'function') window.showToast('Falha ao gerar novo link.', 4000);
-      return;
-    }
+    const { error } = await window.sb.from('requests').update({ share_token: newToken }).eq('id', id);
+    if (error) { toast(T.regenFail, 4000); return; }
     try { await navigator.clipboard.writeText(pedidoLink(newToken)); } catch (_) {}
-    if (typeof window.showToast === 'function') window.showToast('Novo link gerado e copiado. O link antigo parou de funcionar.', 3500);
-    renderPedidos();
+    toast(T.regenDone, 3500);
+    await loadPedidos();
+    paintPedidosList();
   };
 
   window.v7CopyPedidoLink = function(token, btn) {
-    const link = pedidoLink(token);
     const done = () => {
       if (!btn) return;
       const orig = btn.textContent;
-      btn.textContent = 'Copiado ✓';
+      btn.textContent = pt().copied;
       setTimeout(() => { btn.textContent = orig; }, 1800);
     };
-    navigator.clipboard.writeText(link).then(done).catch(done);
+    navigator.clipboard.writeText(pedidoLink(token)).then(done).catch(done);
   };
-
-  function paintRespostasList(root) {
-    root = root || $('[data-screen="respostas"]');
-    if (!root) return;
-
-    if (!RESPOSTAS.length) {
-      root.innerHTML = `
-        <div class="v7-screen-head"><div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div></div>
-        <div class="v7-card" style="padding:3rem 1.5rem;">
-          <div class="v7-empty">${V7_ICON.inbox}<h4>${tt('resp-empty-title')}</h4><p>${tt('resp-empty-sub')}</p></div>
-        </div>`;
-      return;
-    }
-
-    const rows = RESPOSTAS.map(r => `
-      <div class="v7-table-row resp-row" onclick="v7ShowResposta('${r.id}')">
-        <div>
-          <div class="v7-table-title">${escapeXML(r.nomeDash || '—')}${r.status === 'delivered' ? ' <span style="font:500 .68rem var(--font-mono);color:var(--ok, #0f7a52);">· entregue</span>' : ''}</div>
-          <div class="v7-table-id">${escapeXML(r.decisao || '').slice(0, 60)}</div>
-        </div>
-        <div class="v7-owner v7-hide-md">
-          <div class="v7-owner-avatar">${initials(r.submitterName || '—')}</div>
-          <span class="v7-table-cell">${escapeXML((r.submitterName || '—').split(' ')[0])}</span>
-        </div>
-        <div>${scoreChip(r.readinessScore || 0)}</div>
-        <div class="v7-table-cell muted v7-hide-md">${fmtDate(r.submittedAt)}</div>
-      </div>
-    `).join('');
-
-    root.innerHTML = `
-      <div class="v7-screen-head">
-        <div><h1 class="v7-screen-title">${tt('sb-respostas')}</h1></div>
-      </div>
-      <div class="v7-table">
-        <div class="v7-table-row resp-row head">
-          <div>${tt('sb-briefing')}</div><div class="v7-hide-md">${V7.lang === 'pt' ? 'De' : 'From'}</div><div>Score</div><div class="v7-hide-md">${V7.lang === 'pt' ? 'Data' : 'Date'}</div>
-        </div>
-        ${rows}
-      </div>`;
-  }
 
   const RESP_LABELS = {
     pt: { nome:'Solicitante', area:'Área', sponsor:'Sponsor', nomeDash:'Nome do BI', audiencia:'Audiência', freq:'Frequência', stakeholders:'Outros envolvidos', biExistente:'BI existente',
@@ -10373,94 +10442,99 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     { pt:'O visual', en:'The visual', fields:['visuals','corHex','modoBI'] },
     { pt:'Viabilidade', en:'Feasibility', fields:['acesso','urgencia','naoObjetivos','obs'] },
   ];
-  function respLabels() { return RESP_LABELS[V7.lang] || RESP_LABELS.en; }
 
-  window.v7ShowResposta = function(id) {
-    const r = RESPOSTAS.find(x => x.id === id);
-    const root = $('[data-screen="respostas"]');
-    if (!r || !root) return;
-    const L = respLabels();
+  window.v7OpenPedido = function(id) { pedidoOpenId = id; paintPedidoDetail(id); $('.v7-main')?.scrollTo({ top: 0, behavior: 'instant' }); };
+  window.v7BackToPedidos = function() { pedidoOpenId = null; paintPedidosList(); };
+
+  function paintPedidoDetail(id) {
+    const r = PEDIDOS.find(x => x.id === id);
+    const root = $('[data-screen="pedidos"]');
+    if (!r || !root) { pedidoOpenId = null; paintPedidosList(); return; }
+    const T = pt();
+    const L = RESP_LABELS[V7.lang] || RESP_LABELS.pt;
+    const lang = V7.lang === 'en' ? 'en' : 'pt';
     const filled = v => v != null && String(v).trim() !== '' && v !== '—';
     const detailRow = (label, valueHtml) => `
-      <div style="display:flex; gap:1.2rem; padding:.65rem 0; border-bottom:1px solid var(--border);">
-        <div style="flex:0 0 150px; color:var(--muted); font-family:var(--font-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; padding-top:.1rem;">${label}</div>
-        <div style="flex:1; min-width:0; color:var(--text); font-size:.9rem; line-height:1.55; white-space:normal; overflow-wrap:break-word;">${valueHtml}</div>
+      <div class="v7-ped-field">
+        <div class="v7-ped-field-k">${label}</div>
+        <div class="v7-ped-field-v">${valueHtml}</div>
       </div>`;
-    const paletteHtml = (r.paleta || []).map(c => `<span style="display:inline-block;width:20px;height:20px;border-radius:4px;background:${c};margin-right:4px;vertical-align:middle;border:1px solid var(--border)"></span>`).join('');
+
+    const paletteHtml = (r.paleta || []).map(c => `<span class="v7-ped-swatch" style="background:${escapeXML(c)}"></span>`).join('');
     const groupsHtml = RESP_GROUPS.map(g => {
       const rows = g.fields.filter(k => filled(r[k]))
-        .map(k => detailRow(L[k], escapeXML(String(r[k])).replace(/\n/g,'<br>')));
-      if (g.fields.includes('modoBI') && paletteHtml) rows.push(detailRow(V7.lang==='pt'?'Paleta':'Palette', paletteHtml));
+        .map(k => detailRow(L[k], escapeXML(String(r[k])).replace(/\n/g, '<br>')));
+      if (g.fields.includes('modoBI') && paletteHtml) rows.push(detailRow(T.palette, paletteHtml));
       if (!rows.length) return '';
       return `
-        <div class="v7-card" style="padding:.4rem 1.2rem; margin-bottom:1rem;">
-          <div style="font:600 .85rem var(--font-sans); color:var(--text-strong); padding:.9rem 0 .4rem;">${V7.lang==='pt' ? g.pt : g.en}</div>
+        <div class="v7-card v7-ped-group">
+          <div class="v7-ped-group-title">${g[lang]}</div>
           ${rows.join('')}
         </div>`;
     }).join('');
 
-    const delivered = r.status === 'delivered';
-    const deliveryCard = `
-      <div class="v7-card" style="padding:1.4rem; margin-bottom:1rem;">
-        <div style="font:600 .85rem var(--font-sans); color:var(--text-strong); margin-bottom:.7rem;">
-          ${delivered ? (V7.lang==='pt'?'Dashboard entregue':'Dashboard delivered') : (V7.lang==='pt'?'Entrega do dashboard':'Dashboard delivery')}
-        </div>
-        ${delivered && r.dashboardUrl ? `
-          <a href="${escapeXML(r.dashboardUrl)}" target="_blank" rel="noopener" style="display:block; color:var(--brand); font-size:.85rem; word-break:break-all; margin-bottom:.8rem;">${escapeXML(r.dashboardUrl)}</a>
-        ` : ''}
-        <div style="display:flex; gap:.6rem; flex-wrap:wrap;">
-          <input id="deliveryUrlInput" type="url" placeholder="${delivered ? (V7.lang==='pt'?'Colar novo link pra atualizar':'Paste a new link to update') : (V7.lang==='pt'?'Link do Power BI publicado':'Published Power BI link')}"
-            style="flex:1; min-width:220px; padding:.6rem .75rem; border:var(--hairline); border-radius:9px; background:var(--bg); color:var(--text-strong); font:400 .88rem var(--font-sans);">
-          <button type="button" class="v7-btn" id="deliverySaveBtn" onclick="v7SaveDelivery('${r.id}')">
-            ${delivered ? (V7.lang==='pt'?'Atualizar link':'Update link') : (V7.lang==='pt'?'Marcar como entregue':'Mark as delivered')}
-          </button>
-        </div>
+    const steps = [
+      { label: T.timeline.created, at: r.createdAt },
+      { label: T.timeline.answered, at: r.answeredAt },
+      { label: T.timeline.delivered, at: r.deliveredAt },
+    ];
+    const timeline = `
+      <ol class="v7-ped-timeline">
+        ${steps.map(s => `
+          <li class="${s.at ? 'done' : ''}">
+            <span class="v7-ped-dot"></span>
+            <span class="v7-ped-step">${s.label}</span>
+            <span class="v7-ped-when">${s.at ? fmtDate(s.at) : '—'}</span>
+          </li>`).join('')}
+      </ol>`;
+
+    const delivered = r.status === 'delivered' || (r.status === 'archived' && !!r.dashboardUrl);
+    const deliveryCard = r.status === 'archived' && !r.dashboardUrl ? '' : `
+      <div class="v7-card v7-ped-card">
+        <div class="v7-ped-group-title">${delivered ? T.deliveryDone : T.delivery}</div>
+        ${r.dashboardUrl ? `<a class="v7-ped-link" href="${escapeXML(r.dashboardUrl)}" target="_blank" rel="noopener">${escapeXML(r.dashboardUrl)}</a>` : ''}
+        ${r.status === 'archived' ? '' : `
+        <div class="v7-ped-delivery">
+          <input id="deliveryUrlInput" type="url" placeholder="${delivered ? T.deliveryPhUpdate : T.deliveryPh}">
+          <button type="button" class="v7-btn" id="deliverySaveBtn" onclick="v7SaveDelivery('${r.id}')">${delivered ? T.updateLink : T.markDelivered}</button>
+        </div>`}
       </div>`;
 
+    const headAction = r.status === 'archived'
+      ? `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7UnarchivePedido('${r.id}')">${T.unarchive}</button>`
+      : `<button type="button" class="v7-btn v7-btn-secondary" onclick="v7ArchivePedido('${r.id}')">${T.archive}</button>`;
+
     root.innerHTML = `
-      <div id="respostas-detail-view">
+      <div id="pedido-detail-view">
         <div class="v7-screen-head">
-          <div>
-            <button class="v7-btn v7-btn-secondary" onclick="v7BackToRespostas()">${V7_ICON.chevL}<span>${tt('resp-back')}</span></button>
-            <h1 class="v7-screen-title" style="margin-top:.6rem">${escapeXML(r.nomeDash || '—')}</h1>
-            <div class="v7-screen-sub">${escapeXML(r.submitterName||'—')} · ${fmtDate(r.submittedAt)}</div>
+          <div style="min-width:0;">
+            <button class="v7-btn v7-btn-secondary" onclick="v7BackToPedidos()">${V7_ICON.chevL}<span>${T.back}</span></button>
+            <h1 class="v7-screen-title" style="margin-top:.6rem">${escapeXML(r.nomeDash || T.untitled)}</h1>
+            <div class="v7-screen-sub">${escapeXML(r.submitterName || '—')}${r.area ? ' · ' + escapeXML(r.area) : ''} · <span class="v7-ped-badge">${T.status[r.status] || r.status}</span></div>
           </div>
+          <div>${headAction}</div>
         </div>
-        <div class="v7-card" style="padding:1.4rem; margin-bottom:1rem; display:flex; align-items:center; gap:24px;">
+        ${timeline}
+        <div class="v7-card v7-ped-card v7-ped-score">
           ${r.readinessSvg || ''}
-          <div>Score: <strong>${r.readinessScore||0}/100</strong> · ${escapeXML(r.effortLabel||'—')} · ${escapeXML(r.usageLabel||'—')}</div>
+          <div><div class="v7-ped-group-title">${T.score}</div><strong>${r.readinessScore || 0}/100</strong> · ${escapeXML(r.effortLabel || '—')} · ${escapeXML(r.usageLabel || '—')}</div>
         </div>
         ${deliveryCard}
         ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
         ${groupsHtml}
       </div>`;
-  };
+  }
 
   window.v7SaveDelivery = async function(reqId) {
+    const T = pt();
     const input = $('#deliveryUrlInput');
     const btn = $('#deliverySaveBtn');
     const url = (input?.value || '').trim();
-    if (!url) {
-      if (typeof window.showToast === 'function') window.showToast(V7.lang==='pt'?'Cole um link antes de salvar.':'Paste a link before saving.', 3000);
-      return;
-    }
-    if (btn) { btn.disabled = true; }
-    const sb = window.sb;
-    const { error } = await sb.from('requests').update({
-      dashboard_url: url, status: 'delivered', delivered_at: new Date().toISOString(),
-    }).eq('id', reqId);
-    if (error) {
-      if (typeof window.showToast === 'function') window.showToast(V7.lang==='pt'?'Falha ao salvar o link.':'Failed to save the link.', 4000);
-      if (btn) { btn.disabled = false; }
-      return;
-    }
-    const r = RESPOSTAS.find(x => x.id === reqId);
-    if (r) { r.dashboardUrl = url; r.status = 'delivered'; }
-    if (typeof window.showToast === 'function') window.showToast(V7.lang==='pt'?'Dashboard marcado como entregue ✓':'Dashboard marked as delivered ✓', 3000);
-    window.v7ShowResposta(reqId);
+    if (!url) { toast(T.pasteFirst); return; }
+    if (btn) btn.disabled = true;
+    const ok = await updatePedido(reqId, { dashboard_url: url, status: 'delivered', delivered_at: new Date().toISOString() }, T.saved, T.saveFail);
+    if (!ok && btn) btn.disabled = false;
   };
-
-  window.v7BackToRespostas = function() { paintRespostasList(); };
 
   function escapeXML(s) {
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10598,7 +10672,6 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     })();
 
     // Render all screens
-    renderRespostas();
     renderPedidos();
 
     // Default screen; real auth gate (Supabase) is wired separately and
