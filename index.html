@@ -2,10 +2,10 @@
 <html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BI Briefing · v7 · Plataforma de Intake Analítico</title>
-<meta name="description" content="Briefing inteligente para projetos de BI e Analytics. Score de maturidade, KPI principal, veredito automático, IA conceitual e antes/depois.">
-<meta property="og:title" content="BI Briefing · Estruture demandas antes do primeiro dashboard">
-<meta property="og:description" content="Briefing inteligente para BI. Score de maturidade, KPI, veredito automático e camada de IA. Pare de receber pedidos sem contexto.">
+<title>BI Briefing · Pedidos de dashboard</title>
+<meta name="description" content="Pedidos de dashboard com contexto: o solicitante preenche o briefing por um link e o analista recebe score de prontidão, wireframe e PDF.">
+<meta property="og:title" content="BI Briefing · Organize os pedidos antes do primeiro dashboard">
+<meta property="og:description" content="O solicitante preenche o briefing por um link. O analista recebe score de prontidão, wireframe e PDF antes de construir.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <style>/* cyrillic-ext */
@@ -2280,7 +2280,7 @@ body.dark .eu-pill.eu-high { background: oklch(0.25 0.06 25); color: oklch(0.85 
   color: var(--muted);
 }
 .v6-hero-side-head::after {
-  content: 'LIVE';
+  content: none;
   font-family: var(--font-mono);
   font-size: .62rem;
   letter-spacing: .14em;
@@ -4876,20 +4876,18 @@ html.v7-public-boot .v7-login { display:none !important; }
     <div class="v7-login-art-content">
       <div class="v7-login-logo">
         <span class="v7-logo-mark">B</span>
-        <span>BI Briefing · v7</span>
+        <span>BI Briefing</span>
       </div>
       <div class="v7-login-pitch">
-        <h1 data-v7i18n="lg-pitch">Estruture demandas <em>antes</em> do primeiro dashboard.</h1>
-        <p data-v7i18n="lg-sub">A plataforma de intake analítico para times de BI, Analytics e Data Governance que cansaram de receber pedidos sem contexto.</p>
+        <h1 data-v7i18n="lg-pitch">Organize os pedidos <em>antes</em> do primeiro dashboard.</h1>
+        <p data-v7i18n="lg-sub">Envie um link, receba o briefing com score de prontidão e wireframe, e só então comece a construir.</p>
         <ul class="v7-login-bullets">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b1">Score de prontidão automático em cada briefing</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b2">Workflow de aprovação e refinamento integrado</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b3">Glossário, templates e veredito de maturidade</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b1">Um link por pedido. Quem pede não precisa criar conta.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b2">Cada briefing chega com score de prontidão de 0 a 100.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-v7i18n="lg-b3">Wireframe e PDF para alinhar o escopo antes de construir.</span></li>
         </ul>
       </div>
       <div class="v7-login-foot">
-        <span data-v7i18n="lg-foot1">SOC 2 · LGPD</span>
-        <span data-v7i18n="lg-foot2">v7.0 · 2026</span>
       </div>
     </div>
   </div>
@@ -4998,12 +4996,6 @@ html.v7-public-boot .v7-login { display:none !important; }
           </div>
         </div>
 
-        <!-- Notifications -->
-        <button class="v7-tb-icon-btn" type="button" aria-label="Notifications">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          <span class="v7-notif-dot"></span>
-        </button>
-
         <!-- Dark mode toggle (original v6 animated slider) -->
         <button class="theme-toggle" id="themeBtn" onclick="if(typeof toggleTheme==='function')toggleTheme()" aria-label="Toggle theme" type="button">
           <span class="tt-icon tt-sun" aria-hidden="true">
@@ -5031,7 +5023,7 @@ html.v7-public-boot .v7-login { display:none !important; }
     <div class="top-bar">
       <div class="brand-mark v6-clickable" onclick="if(window.v6BackToHome) v6BackToHome()" title="Voltar para o início">
         <span class="brand-dot"></span>
-        <span>BI Briefing · v6</span>
+        <span>BI Briefing</span>
       </div>
       <div class="top-bar-actions">
         <div class="autosave-indicator" id="autosaveIndicator">
@@ -5105,7 +5097,7 @@ html.v7-public-boot .v7-login { display:none !important; }
           <div>
             <div class="v6-eyebrow-row v6-reveal" data-i18n="v6-hero-eyebrow"><strong>BI Intake</strong> · Briefing inteligente</div>
             <h1 class="v6-hero-title v6-reveal" data-delay="1">
-              <span class="v6-line" data-i18n="v6-hero-title-1">Estruture demandas</span>
+              <span class="v6-line" data-i18n="v6-hero-title-1">Descreva o pedido</span>
               <span class="v6-line" data-i18n="v6-hero-title-2">antes do</span>
               <span class="v6-line"><em data-i18n="v6-hero-title-3">primeiro dashboard.</em></span>
             </h1>
@@ -5136,16 +5128,16 @@ html.v7-public-boot .v7-login { display:none !important; }
           <aside class="v6-hero-side v6-reveal" data-delay="3">
             <div class="v6-hero-side-head" data-i18n="v6-side-head">Score · maturidade</div>
             <div class="v6-hero-side-row">
-              <span data-i18n="v6-side-1-l">Demandas estruturadas</span>
-              <strong>340<span class="v6-side-delta">↑ 12%</span></strong>
+              <span data-i18n="v6-side-1-l">Score de prontidão</span>
+              <strong data-i18n="v6-side-1-v">0 a 100</strong>
             </div>
             <div class="v6-hero-side-row">
-              <span data-i18n="v6-side-2-l">Redução de retrabalho</span>
-              <strong>62%<span class="v6-side-delta">↑ 8pp</span></strong>
+              <span data-i18n="v6-side-2-l">Wireframe do dashboard</span>
+              <strong data-i18n="v6-side-2-v">na hora</strong>
             </div>
             <div class="v6-hero-side-row">
-              <span data-i18n="v6-side-3-l">Aprovação no 1º round</span>
-              <strong>78%<span class="v6-side-delta">↑ 5pp</span></strong>
+              <span data-i18n="v6-side-3-l">Resumo em PDF</span>
+              <strong data-i18n="v6-side-3-v">para baixar</strong>
             </div>
           </aside>
         </div>
@@ -5201,7 +5193,7 @@ html.v7-public-boot .v7-login { display:none !important; }
 
       <!-- INTRO -->
       <div class="intro">
-        <div class="intro-eyebrow" data-i18n="tag">Analytics · Intake Form v6</div>
+        <div class="intro-eyebrow" data-i18n="tag">Briefing de BI</div>
         <h1 data-i18n="h1">Briefing <em>de BI</em></h1>
         <p data-i18n="subtitle">Preencha com cuidado. Cada campo aqui evita uma reunião desnecessária e garante que o dashboard entregue sirva de verdade. Auto-save ativado.</p>
       </div>
@@ -5282,7 +5274,7 @@ html.v7-public-boot .v7-login { display:none !important; }
         </div>
 
         <div class="q-block">
-          <label class="q-label" data-i18n="v6-f-area">Área responsável pela demanda</label>
+          <label class="q-label" data-i18n="v6-f-area">Área responsável pelo pedido</label>
           <div class="q-hint" data-i18n="v6-f-area-hint">Quem é o dono dessa demanda? Sem responsável claro, o BI vira órfão.</div>
           <div class="chips" id="v6-chips-area">
             <div class="chip" data-key="ar-com" data-val-pt="Comercial / Vendas" data-val-en="Sales / Commercial">Comercial / Vendas</div>
@@ -5335,7 +5327,7 @@ html.v7-public-boot .v7-login { display:none !important; }
         </div>
 
         <div class="q-block">
-          <label class="q-label" data-i18n="v6-f-prio">Prioridade da demanda</label>
+          <label class="q-label" data-i18n="v6-f-prio">Prioridade do pedido</label>
           <div class="q-hint" data-i18n="v6-f-prio-hint">P0 trava operação · P1 impacta meta do mês · P2 melhora processo · P3 nice-to-have.</div>
           <div class="chips" id="v6-chips-prio" style="gap:.55rem">
             <div class="v6-prio-chip" data-key="p-p0" data-val-pt="P0 · Crítico" data-val-en="P0 · Critical">P0 · Crítico</div>
@@ -5409,8 +5401,7 @@ html.v7-public-boot .v7-login { display:none !important; }
             <span class="req">*</span>
           </label>
           <div class="q-hint-row">
-            <span class="q-hint" data-i18n="f-metricas-hint">Liste tudo que vier na cabeça, uma por linha. Se travar, clique em <strong>✦ Ajudar a estruturar</strong>.</span>
-            <button class="ai-btn" onclick="abrirTradutor()" type="button" data-i18n="btn-ai-helper">✦ Ajudar a estruturar</button>
+            <span class="q-hint" data-i18n="f-metricas-hint">Liste tudo que vier à cabeça, uma por linha.</span>
           </div>
           <textarea id="metricas" rows="5" data-i18n-ph="ph-metricas" placeholder="Ex:
 Total de vendas por loja
@@ -5769,7 +5760,7 @@ Custo de perda..."></textarea>
           <div class="result-card" id="result-card"></div>
 
           <div class="action-btns">
-            <button class="copy-btn" id="sendBtn" onclick="enviarResposta()" type="button">📨 <span data-i18n="send-btn">Enviar resposta</span></button>
+            <button class="copy-btn" id="sendBtn" onclick="enviarResposta()" type="button">📨 <span data-i18n="send-btn">Enviar briefing</span></button>
             <button class="copy-btn" id="pdfBtn" onclick="gerarPDF()" type="button">⬇ <span data-i18n="pdf-btn">Baixar PDF</span></button>
           </div>
         </div>
@@ -5794,7 +5785,7 @@ Custo de perda..."></textarea>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M2 7l10 7 10-7"></path></svg>
               </a>
             </div>
-            <div class="footer-copy">© 2026 · BI Briefing v5</div>
+            <div class="footer-copy">© 2026 · BI Briefing</div>
           </div>
         </div>
       </footer>
@@ -5841,7 +5832,7 @@ Custo de perda..."></textarea>
 
 const i18n = {
   pt: {
-    tag:'Analytics · Intake Form v5', h1:'Briefing <em>de BI</em>',
+    tag:'Briefing de BI', h1:'Briefing <em>de BI</em>',
     subtitle:'Preencha com cuidado. Cada campo aqui evita uma reunião desnecessária e garante que o dashboard entregue sirva de verdade. Auto-save ativado.',
     'rail-tag':'Etapas',
     'rail-s0':'Identificação', 'rail-s1':'A Dor Real', 'rail-s2':'Os Dados', 'rail-s3':'O Visual', 'rail-s4':'Viabilidade & Resumo',
@@ -5894,7 +5885,7 @@ const i18n = {
     'ph-excel':'Ex: Atualizo todo dia às 8h manualmente, são 3 abas com ~5.000 linhas cada.',
     'f-metricas':'Quais as principais',
     'f-metricas-rest':'que você quer ver?',
-    'f-metricas-hint':'Liste tudo que vier na cabeça, uma por linha. Se travar, clique em <strong>✦ Ajudar a estruturar</strong>.',
+    'f-metricas-hint':'Liste tudo que vier à cabeça, uma por linha.',
     'ph-metricas':'Ex:\nTotal de vendas por loja\n% de ruptura\nItens com validade vencendo em 30 dias\nCusto de perda...',
     'btn-ai-helper':'✦ Ajudar a estruturar',
     'f-dim':'Por quais',
@@ -5965,8 +5956,8 @@ const i18n = {
     generate:'Gerar Resumo →',
     'summary-title':'Resumo do Briefing', 'copy-btn':'Copiar como texto', 'pdf-btn':'Baixar PDF', 'mail-btn':'Enviar por e-mail',
     'mail-opt-app':'Abrir no app de e-mail', 'mail-opt-gmail':'Abrir no Gmail', 'mail-opt-outlook':'Abrir no Outlook',
-    'send-btn':'Enviar resposta', 'send-sending':'Enviando...', 'send-ok':'Resposta enviada ✓', 'send-fail':'Falha ao enviar. Tente novamente.',
-    'resp-unavailable':'Envio só funciona abrindo este app pelo link do Claude (não nesta cópia).',
+    'send-btn':'Enviar briefing', 'send-sending':'Enviando...', 'send-ok':'Briefing enviado ✓', 'send-fail':'Falha ao enviar. Tente novamente.',
+    'resp-unavailable':'Este briefing só pode ser enviado pelo link do pedido.',
     'jira-btn':'Formato Jira', 'md-btn':'Markdown / Notion',
     copied:'Copiado',
     'reset-confirm':'Apagar tudo e começar do zero?',
@@ -5997,7 +5988,7 @@ const i18n = {
     sm_no_story:'ℹ Recomendado: descreva uma situação real onde você precisou desse dado. Briefings sem história costumam virar BIs que ninguém usa.',
   },
   en: {
-    tag:'Analytics · Intake Form v5', h1:'BI <em>Briefing</em>',
+    tag:'BI brief', h1:'BI <em>Briefing</em>',
     subtitle:'Fill this out carefully. Every field here prevents an unnecessary meeting and ensures the dashboard actually works. Auto-save enabled.',
     'rail-tag':'Steps',
     'rail-s0':'Identification', 'rail-s1':'Real Problem', 'rail-s2':'The Data', 'rail-s3':'The Visual', 'rail-s4':'Viability & Summary',
@@ -6046,7 +6037,7 @@ const i18n = {
     'ph-excel':'e.g. I update it manually every day at 8am, 3 tabs with ~5,000 rows each.',
     'f-metricas':'What are the main',
     'f-metricas-rest':'you want to see?',
-    'f-metricas-hint':'List everything that comes to mind, one per line. If stuck, click <strong>✦ Help me structure</strong>.',
+    'f-metricas-hint':'List everything that comes to mind, one per line.',
     'ph-metricas':'e.g.\nTotal sales by store\n% stockout\nItems expiring in 30 days\nLoss cost...',
     'btn-ai-helper':'✦ Help me structure',
     'f-dim':'By which',
@@ -6110,8 +6101,8 @@ const i18n = {
     generate:'Generate Summary →',
     'summary-title':'Briefing Summary', 'copy-btn':'Copy as text', 'pdf-btn':'Download PDF', 'mail-btn':'Send by email',
     'mail-opt-app':'Open in email app', 'mail-opt-gmail':'Open in Gmail', 'mail-opt-outlook':'Open in Outlook',
-    'send-btn':'Send response', 'send-sending':'Sending...', 'send-ok':'Response sent ✓', 'send-fail':'Failed to send. Try again.',
-    'resp-unavailable':'Sending only works when opening this app via the Claude link (not this copy).',
+    'send-btn':'Submit brief', 'send-sending':'Submitting...', 'send-ok':'Brief submitted ✓', 'send-fail':'Failed to send. Try again.',
+    'resp-unavailable':'This brief can only be submitted from the request link.',
     'jira-btn':'Jira format', 'md-btn':'Markdown / Notion',
     copied:'Copied',
     'reset-confirm':'Erase everything and start fresh?',
@@ -6981,7 +6972,7 @@ function loadSaved(){
   try { payload = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch (_) { return false; }
   if (!payload || payload.v !== 5) return false;
 
-  if (payload.lang) setLang(payload.lang);
+  // Language comes from the app's selector (biV7_lang), not from the saved draft.
   if (payload.isDark) { isDark = true; document.body.classList.add('dark'); }
 
   if (payload.state) {
@@ -7835,7 +7826,7 @@ function buildTextLines() {
     '',
     '─'.repeat(48),
     `Gerado em: ${new Date().toLocaleString(lang==='pt'?'pt-BR':'en-US')}`,
-    'Ferramenta: BI Briefing Form v5 · por Jonatas Menezes',
+    'Ferramenta: BI Briefing · por Jonatas Menezes',
     'https://jntsmenezes.github.io/#home',
   ];
 }
@@ -7932,7 +7923,7 @@ function exportMarkdown(){
     `---`,
     `**${t.r_score}:** ${state.readinessScore||0}/100 · **${t.r_effort}:** ${state.effortLabel||'—'} · **${t.r_usage}:** ${state.usageLabel||'—'}`,
     ``,
-    `_Gerado em ${new Date().toLocaleString(lang==='pt'?'pt-BR':'en-US')} · BI Briefing Form v5_`,
+    `_Gerado em ${new Date().toLocaleString(lang==='pt'?'pt-BR':'en-US')} · BI Briefing_`,
   ].join('\n');
   copyToClipboard(md, document.getElementById('mdBtn'));
 }
@@ -8028,8 +8019,8 @@ async function enviarResposta() {
   try {
     const { error } = await sb.rpc('answer_request_by_token', { p_token: token, p_payload: payload });
     if (error) throw error;
-    btn.innerHTML = '✓ ' + (t['send-ok'] || 'Enviado');
-    showToast(t['send-ok'] || 'Resposta enviada ✓');
+    btn.innerHTML = t['send-ok'] || 'Enviado ✓';
+    showToast(t['send-ok'] || 'Briefing enviado ✓');
   } catch (e) {
     btn.innerHTML = origHTML;
     btn.disabled = false;
@@ -8150,7 +8141,7 @@ function gerarPDF() {
     }
   </style></head><body>
   <div class="accent-bar"></div>
-  <div class="eyebrow">BI Briefing Form v5 · Analytics</div>
+  <div class="eyebrow">BI Briefing</div>
   <h1>${escapeHTML(state.nomeDash||'Briefing de BI')}</h1>
   <div class="sub">${escapeHTML(state.nome||'—')} · ${new Date().toLocaleString(lang==='pt'?'pt-BR':'en-US')}</div>
   <div class="scorebar">
@@ -8173,7 +8164,7 @@ function gerarPDF() {
   <div class="divider"></div>
   <table>${tableRows}</table>
   <div class="footer-pdf">
-    <div class="brand">Jonatas <em>Menezes</em> · BI Briefing Form v5</div>
+    <div class="brand">Jonatas <em>Menezes</em> · BI Briefing</div>
     <div class="date">jntsmenezes.github.io<br>${new Date().toLocaleDateString(lang==='pt'?'pt-BR':'en-US')}</div>
   </div>
   <script>window.onload=()=>{setTimeout(()=>window.print(),400);}<\/script>
@@ -8274,18 +8265,18 @@ window.resetAll = resetAll;
   if (typeof i18n === 'undefined') return;
   Object.assign(i18n.pt, {
     /* Hero */
-    'v6-hero-eyebrow':'<strong>BI Intake</strong> · Briefing inteligente',
-    'v6-hero-title-1':'Estruture demandas',
+    'v6-hero-eyebrow':'<strong>Briefing de BI</strong> · pedido de dashboard',
+    'v6-hero-title-1':'Descreva o pedido',
     'v6-hero-title-2':'antes do',
     'v6-hero-title-3':'primeiro dashboard.',
-    'v6-hero-sub':'Um <strong>briefing inteligente</strong> para projetos de BI e Analytics. Pare de receber pedidos sem contexto, dashboards mal definidos e demandas que viram retrabalho.',
-    'v6-meta-1-l':'Tempo médio', 'v6-meta-1-v':'12 min',
+    'v6-hero-sub':'Conte qual decisão o dashboard precisa apoiar, de onde vêm os dados e como você imagina o visual. No fim, você vê o <strong>score de prontidão</strong> e o wireframe, e envia o briefing para o analista.',
+    'v6-meta-1-l':'Tempo estimado', 'v6-meta-1-v':'~12 min',
     'v6-meta-2-l':'Score gerado', 'v6-meta-2-v':'auto.',
     'v6-meta-3-l':'Veredito', 'v6-meta-3-v':'instantâneo',
-    'v6-side-head':'Score · maturidade',
-    'v6-side-1-l':'Demandas estruturadas',
-    'v6-side-2-l':'Redução de retrabalho',
-    'v6-side-3-l':'Aprovação no 1º round',
+    'v6-side-head':'No fim você recebe',
+    'v6-side-1-l':'Score de prontidão', 'v6-side-1-v':'0 a 100',
+    'v6-side-2-l':'Wireframe do dashboard', 'v6-side-2-v':'na hora',
+    'v6-side-3-l':'Resumo em PDF', 'v6-side-3-v':'para baixar',
     'v6-cta':'Começar briefing',
     'v6-cta-secondary':'Ver como funciona',
     'v6-scroll':'Role para começar',
@@ -8301,15 +8292,15 @@ window.resetAll = resetAll;
     'v6-prob-5-n':'Escopo confuso', 'v6-prob-5-d':'Cada reunião adiciona um filtro novo. O projeto nunca termina.',
 
     /* New fields — Step 0 */
-    'v6-f-area':'Área responsável pela demanda',
-    'v6-f-area-hint':'Quem é o dono dessa demanda? Sem responsável claro, o BI vira órfão.',
+    'v6-f-area':'Área responsável pelo pedido',
+    'v6-f-area-hint':'Qual área responde por esse pedido? Sem dono claro, o BI fica sem ninguém para cuidar dele.',
     'v6-rail-home':'Voltar para o início',
     'v6-f-stakeholder-main':'Stakeholder principal (sponsor)',
     'v6-f-stakeholder-main-hint':'A pessoa que aprova, paga e responde pelos resultados. Geralmente é quem assina o briefing.',
     'v6-ph-stakeholder-main':'Ex: Marina Vasconcelos · Diretora Comercial',
 
     /* Step 1 — Pain + strategic context */
-    'v6-f-prio':'Prioridade da demanda',
+    'v6-f-prio':'Prioridade do pedido',
     'v6-f-prio-hint':'P0 trava operação · P1 impacta meta do mês · P2 melhora processo · P3 nice-to-have.',
     'v6-f-kpi':'Qual é o KPI principal? O número que MOVE quando esse BI funciona.',
     'v6-f-kpi-hint':'Um único KPI. Se você listar 5, ainda não definiu prioridade.',
@@ -8332,7 +8323,7 @@ window.resetAll = resetAll;
     'v6-verdict-ready':'Pronta para desenvolvimento',
     'v6-verdict-ready-sub':'Você fez o dever de casa. Os pilares estão sólidos, os números fazem sentido e o escopo está claro. Pode encaminhar.',
     'v6-verdict-refine':'Necessita refinamento',
-    'v6-verdict-refine-sub':'A demanda tem fundamento, mas 1 ou 2 pilares estão frágeis. Refinar agora evita reunião depois.',
+    'v6-verdict-refine-sub':'O pedido tem fundamento, mas 1 ou 2 pilares estão frágeis. Ajustar agora evita uma reunião depois.',
     'v6-verdict-risk':'Alto risco de retrabalho',
     'v6-verdict-risk-sub':'Faltam definições fundamentais. Entregar agora vai gerar retrabalho. Volte uma etapa e refine antes de avançar.',
 
@@ -8343,25 +8334,25 @@ window.resetAll = resetAll;
     'v6-dim-regras':'Regras de negócio',
 
     /* AI conceptual */
-    'v6-ai-eyebrow':'Camada inteligente',
-    'v6-ai-title-section':'A IA leu seu briefing.',
-    'v6-ai-sub':'4 saídas geradas automaticamente — para colar no Jira, alinhar com a área, ou desafiar premissas.',
+    'v6-ai-eyebrow':'Leitura automática',
+    'v6-ai-title-section':'O que o seu briefing já mostra.',
+    'v6-ai-sub':'Quatro leituras montadas por regras a partir das suas respostas. Use para alinhar com a área ou rever o que ficou vago.',
 
     'v6-ai-kpi-tag':'KPI sugerido',
-    'v6-ai-kpi-title':'Sugestões automáticas de KPI',
-    'v6-ai-summary-tag':'Resumo · TL;DR',
-    'v6-ai-summary-title':'Resumo inteligente da demanda',
-    'v6-ai-scope-tag':'Escopo gerado',
-    'v6-ai-scope-title':'Geração automática de escopo analítico',
-    'v6-ai-insights-tag':'Insights',
-    'v6-ai-insights-title':'O que pulou da sua resposta',
+    'v6-ai-kpi-title':'Sugestões de KPI',
+    'v6-ai-summary-tag':'Resumo',
+    'v6-ai-summary-title':'Resumo do pedido',
+    'v6-ai-scope-tag':'Escopo',
+    'v6-ai-scope-title':'Escopo analítico sugerido',
+    'v6-ai-insights-tag':'Atenção',
+    'v6-ai-insights-title':'O que chama atenção',
     'v6-ai-regenerate':'↻ Regenerar com IA',
-    'v6-ai-empty':'Preencha mais campos para a IA gerar saídas.',
+    'v6-ai-empty':'Preencha mais campos para ver as leituras.',
 
     /* Before / After */
     'v6-ba-eyebrow':'Por que esse briefing importa',
     'v6-ba-title':'Antes vs Depois.',
-    'v6-ba-sub':'O que muda quando uma demanda chega bem estruturada.',
+    'v6-ba-sub':'O que muda quando o pedido chega bem descrito.',
     'v6-ba-before-title':'Sem BI Briefing',
     'v6-ba-after-title':'Com BI Briefing',
     'v6-ba-before-1':'Retrabalho a cada nova reunião',
@@ -8377,19 +8368,19 @@ window.resetAll = resetAll;
   });
 
   Object.assign(i18n.en, {
-    'v6-hero-eyebrow':'<strong>BI Intake</strong> · Smart briefing',
-    'v6-hero-title-1':'Structure BI demands',
+    'v6-hero-eyebrow':'<strong>BI brief</strong> · dashboard request',
+    'v6-hero-title-1':'Describe the request',
     'v6-hero-title-2':'before the',
     'v6-hero-title-3':'first dashboard.',
-    'v6-hero-sub':'A <strong>smart intake form</strong> for BI and Analytics projects. Stop receiving context-less requests, poorly defined dashboards, and demands that turn into rework.',
-    'v6-meta-1-l':'Avg. time', 'v6-meta-1-v':'12 min',
+    'v6-hero-sub':'Tell us which decision the dashboard should support, where the data comes from and how you picture it. At the end you see the <strong>readiness score</strong> and the wireframe, and submit the brief to the analyst.',
+    'v6-meta-1-l':'Estimated time', 'v6-meta-1-v':'~12 min',
     'v6-meta-2-l':'Score', 'v6-meta-2-v':'auto.',
     'v6-meta-3-l':'Verdict', 'v6-meta-3-v':'instant',
-    'v6-side-head':'Maturity · score',
-    'v6-side-1-l':'Structured demands',
-    'v6-side-2-l':'Rework reduction',
-    'v6-side-3-l':'First-round approval',
-    'v6-cta':'Start briefing',
+    'v6-side-head':'At the end you get',
+    'v6-side-1-l':'Readiness score', 'v6-side-1-v':'0–100',
+    'v6-side-2-l':'Dashboard wireframe', 'v6-side-2-v':'instant',
+    'v6-side-3-l':'PDF summary', 'v6-side-3-v':'to download',
+    'v6-cta':'Start brief',
     'v6-cta-secondary':'See how it works',
     'v6-scroll':'Scroll to start',
 
@@ -8402,13 +8393,13 @@ window.resetAll = resetAll;
     'v6-prob-4-n':'Business × Data gap', 'v6-prob-4-d':'Business talks goals, data talks queries. Nobody understands each other.',
     'v6-prob-5-n':'Scope creep', 'v6-prob-5-d':'Every meeting adds a new filter. The project never ends.',
 
-    'v6-f-area':'Area accountable for the demand',
-    'v6-f-area-hint':'Who owns this demand? Without a clear owner, the BI becomes an orphan.',
+    'v6-f-area':'Area accountable for the request',
+    'v6-f-area-hint':'Which area owns this request? Without a clear owner, the BI ends up with nobody looking after it.',
     'v6-rail-home':'Back to start',
     'v6-f-stakeholder-main':'Main stakeholder (sponsor)',
     'v6-f-stakeholder-main-hint':'The person who approves, funds and is accountable for outcomes. Usually whoever signs the brief.',
     'v6-ph-stakeholder-main':'Ex: Marina Vasconcelos · Commercial Director',
-    'v6-f-prio':'Demand priority',
+    'v6-f-prio':'Request priority',
     'v6-f-prio-hint':'P0 blocks ops · P1 hits the monthly goal · P2 improves a process · P3 nice-to-have.',
     'v6-f-kpi':'What is the core KPI? The number that MOVES when this BI works.',
     'v6-f-kpi-hint':'One single KPI. If you list 5, you have not prioritized yet.',
@@ -8428,7 +8419,7 @@ window.resetAll = resetAll;
     'v6-verdict-ready':'Ready for development',
     'v6-verdict-ready-sub':'You did the homework. The pillars are solid, the numbers make sense, and the scope is clear. You can hand this off.',
     'v6-verdict-refine':'Needs refinement',
-    'v6-verdict-refine-sub':'The demand has merit, but 1-2 pillars are weak. Refining now prevents a meeting later.',
+    'v6-verdict-refine-sub':'The request has merit, but 1-2 pillars are weak. Fixing them now saves a meeting later.',
     'v6-verdict-risk':'High rework risk',
     'v6-verdict-risk-sub':'Foundational definitions are missing. Shipping now will generate rework. Go back one step and refine.',
     'v6-dim-objetivo':'Goal clarity',
@@ -8437,23 +8428,23 @@ window.resetAll = resetAll;
     'v6-dim-resp':'Owner defined',
     'v6-dim-regras':'Business rules',
 
-    'v6-ai-eyebrow':'Intelligent layer',
-    'v6-ai-title-section':'The AI read your briefing.',
-    'v6-ai-sub':'4 outputs generated automatically — to paste into Jira, align with the area, or challenge assumptions.',
+    'v6-ai-eyebrow':'Automatic reading',
+    'v6-ai-title-section':'What your brief already shows.',
+    'v6-ai-sub':'Four readings built by rules from your answers. Use them to align with your team or tighten what is still vague.',
     'v6-ai-kpi-tag':'Suggested KPI',
-    'v6-ai-kpi-title':'Automatic KPI suggestions',
-    'v6-ai-summary-tag':'Summary · TL;DR',
-    'v6-ai-summary-title':'Smart demand summary',
-    'v6-ai-scope-tag':'Generated scope',
-    'v6-ai-scope-title':'Auto-generated analytical scope',
-    'v6-ai-insights-tag':'Insights',
-    'v6-ai-insights-title':'What jumped out from your answers',
+    'v6-ai-kpi-title':'KPI suggestions',
+    'v6-ai-summary-tag':'Summary',
+    'v6-ai-summary-title':'Request summary',
+    'v6-ai-scope-tag':'Scope',
+    'v6-ai-scope-title':'Suggested analytical scope',
+    'v6-ai-insights-tag':'Watch-outs',
+    'v6-ai-insights-title':'What stands out',
     'v6-ai-regenerate':'↻ Regenerate with AI',
-    'v6-ai-empty':'Fill more fields so the AI can generate outputs.',
+    'v6-ai-empty':'Fill in more fields to see the readings.',
 
     'v6-ba-eyebrow':'Why this briefing matters',
     'v6-ba-title':'Before vs After.',
-    'v6-ba-sub':'What changes when a demand arrives well structured.',
+    'v6-ba-sub':'What changes when a request arrives well described.',
     'v6-ba-before-title':'Without BI Briefing',
     'v6-ba-after-title':'With BI Briefing',
     'v6-ba-before-1':'Rework at every new meeting',
@@ -8753,10 +8744,10 @@ function v6BuildSummary(s, m){
   const prio = (s.v6Prio && s.v6Prio !== '—') ? s.v6Prio : '';
 
   if (isPt) {
-    let txt = `<strong>${escapeHTML(name)}</strong> é uma demanda da área de <strong>${escapeHTML(owner)}</strong>${prio?` com prioridade <strong>${escapeHTML(prio)}</strong>`:''}. O objetivo central é <em>${escapeHTML(decision || 'apoiar uma decisão ainda não especificada')}</em>, medido principalmente por <strong>${escapeHTML(kpi)}</strong>${impacto?`. Impacto esperado: ${escapeHTML(impacto)}`:''}.`;
+    let txt = `<strong>${escapeHTML(name)}</strong> é um pedido da área de <strong>${escapeHTML(owner)}</strong>${prio?` com prioridade <strong>${escapeHTML(prio)}</strong>`:''}. O objetivo central é <em>${escapeHTML(decision || 'apoiar uma decisão ainda não especificada')}</em>, medido principalmente por <strong>${escapeHTML(kpi)}</strong>${impacto?`. Impacto esperado: ${escapeHTML(impacto)}`:''}.`;
     if (m) {
       const lbl = { ready: 'pronta para desenvolvimento', refine: 'precisa de refinamento antes de ir para dev', risk: 'apresenta alto risco de retrabalho se for desenvolvida agora' }[m.verdict];
-      txt += ` A demanda está <strong>${lbl}</strong> (score ${m.total}/100).`;
+      txt += ` O pedido está <strong>${lbl}</strong> (score ${m.total}/100).`;
     }
     return txt;
   } else {
@@ -9107,11 +9098,11 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   const V7_I18N = {
     pt: {
       // Login
-      'lg-pitch': 'Estruture demandas <em>antes</em> do primeiro dashboard.',
-      'lg-sub': 'A plataforma de intake analítico para times de BI, Analytics e Data Governance que cansaram de receber pedidos sem contexto.',
-      'lg-b1': 'Score de prontidão automático em cada briefing',
-      'lg-b2': 'Workflow de aprovação e refinamento integrado',
-      'lg-b3': 'Glossário, templates e veredito de maturidade',
+      'lg-pitch': 'Organize os pedidos <em>antes</em> do primeiro dashboard.',
+      'lg-sub': 'Envie um link, receba o briefing com score de prontidão e wireframe, e só então comece a construir.',
+      'lg-b1': 'Um link por pedido. Quem pede não precisa criar conta.',
+      'lg-b2': 'Cada briefing chega com score de prontidão de 0 a 100.',
+      'lg-b3': 'Wireframe e PDF para alinhar o escopo antes de construir.',
       'lg-welcome': 'Entrar na plataforma',
       'lg-welcome-sub': 'Acesse com sua conta corporativa para continuar.',
       'lg-google': 'Continuar com Google',
@@ -9129,17 +9120,17 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-section-org': 'Organização',
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Demandas',
-      'sb-briefing': 'Novo briefing',
+      'sb-briefing': 'Briefing',
       'sb-pedidos': 'Pedidos',
       'sb-respostas': 'Respostas recebidas',
       'resp-empty-title': 'Nenhuma resposta ainda',
       'resp-empty-sub': 'Envie o link deste app para alguém preencher. As respostas aparecem aqui, só para você.',
       'resp-empty-guest': 'Você não tem acesso às respostas recebidas — só quem criou este workspace pode vê-las.',
-      'resp-loading': 'Carregando respostas...',
+      'resp-loading': 'Carregando pedidos...',
       'resp-unavailable': 'Envio e recebimento de respostas só funcionam abrindo este app pelo link do Claude (não nesta cópia).',
-      'send-btn': 'Enviar resposta',
+      'send-btn': 'Enviar briefing',
       'send-sending': 'Enviando...',
-      'send-ok': 'Resposta enviada ✓',
+      'send-ok': 'Briefing enviado ✓',
       'send-fail': 'Falha ao enviar. Tente novamente.',
       'resp-view': 'Ver detalhes',
       'resp-back': 'Voltar para a lista',
@@ -9202,11 +9193,11 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'soon-sub': 'Esta área está sendo preparada. Continue no Dashboard ou abra um briefing.',
     },
     en: {
-      'lg-pitch': 'Structure requests <em>before</em> the first dashboard.',
-      'lg-sub': 'The analytical intake platform for BI, Analytics, and Data Governance teams tired of receiving requests without context.',
-      'lg-b1': 'Automatic readiness score on every briefing',
-      'lg-b2': 'Built-in approval and refinement workflow',
-      'lg-b3': 'Glossary, templates, and maturity verdict',
+      'lg-pitch': 'Sort out requests <em>before</em> the first dashboard.',
+      'lg-sub': 'Send a link, get back a brief with a readiness score and a wireframe, and only then start building.',
+      'lg-b1': 'One link per request. Requesters don\'t need an account.',
+      'lg-b2': 'Every brief arrives with a 0–100 readiness score.',
+      'lg-b3': 'Wireframe and PDF to agree on scope before building.',
       'lg-welcome': 'Sign in to the platform',
       'lg-welcome-sub': 'Use your corporate account to continue.',
       'lg-google': 'Continue with Google',
@@ -9223,17 +9214,17 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       'sb-section-org': 'Organization',
       'sb-dashboard': 'Dashboard',
       'sb-demands': 'Requests',
-      'sb-briefing': 'New briefing',
+      'sb-briefing': 'Brief',
       'sb-pedidos': 'Requests',
       'sb-respostas': 'Received responses',
       'resp-empty-title': 'No responses yet',
       'resp-empty-sub': 'Send this app\'s link to someone to fill it out. Responses show up here, visible only to you.',
       'resp-empty-guest': 'You don\'t have access to received responses — only this workspace\'s creator can see them.',
-      'resp-loading': 'Loading responses...',
+      'resp-loading': 'Loading requests...',
       'resp-unavailable': 'Sending and receiving responses only works when opening this app via the Claude link (not this copy).',
-      'send-btn': 'Send response',
+      'send-btn': 'Submit brief',
       'send-sending': 'Sending...',
-      'send-ok': 'Response sent ✓',
+      'send-ok': 'Brief submitted ✓',
       'send-fail': 'Failed to send. Try again.',
       'resp-view': 'View details',
       'resp-back': 'Back to list',
@@ -9683,6 +9674,8 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   function setLangV7(l) {
     V7.lang = l;
     applyShellLang();
+    const crumbEl = $('#v7-crumb-name');
+    if (crumbEl && V7.screen) crumbEl.textContent = tt('sb-' + V7.screen);
     // Sync flag in trigger
     const flag = $('#v7-lang-flag');
     if (flag) flag.innerHTML = window.V7_FLAGS[l] || window.V7_FLAGS.pt;
@@ -9690,14 +9683,11 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     if (label) label.textContent = l.toUpperCase();
     // Active state
     $$('.v7-lang-item').forEach(it => it.classList.toggle('active', it.dataset.lang === l));
-    // Also propagate to v6 briefing form if PT or EN (v6 only knows those)
-    if ((l === 'pt' || l === 'en') && typeof window.setLang === 'function') {
+    if (typeof window.setLang === 'function') {
       try { window.setLang(l); } catch(_){}
     }
     try { localStorage.setItem('biV7_lang', l); } catch(_){}
-    // Re-render dashboard & demands which depend on shell strings
-    renderDashboard();
-    renderDemands();
+    if (V7.screen === 'pedidos' && typeof window.v7RepaintPedidos === 'function') window.v7RepaintPedidos();
   }
   window.v7SetLang = setLangV7;
 
@@ -10351,6 +10341,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   }
 
   window.v7PedidosTab = function(k) { pedidosTab = k; paintPedidosList(); };
+  window.v7RepaintPedidos = function() { if (pedidoOpenId) paintPedidoDetail(pedidoOpenId); else paintPedidosList(); };
 
   async function createPedido() {
     const T = pt();
@@ -10578,7 +10569,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     })();
     // Restore saved state
     try {
-      V7.lang  = localStorage.getItem('biV7_lang')  || V7.lang;
+      // Only PT and EN are supported. With no saved choice, follow the browser (EN if it's English, PT otherwise).
+      V7.lang  = localStorage.getItem('biV7_lang') || (/^en/i.test(navigator.language || '') ? 'en' : 'pt');
+      if (V7.lang !== 'pt' && V7.lang !== 'en') V7.lang = 'pt';
       V7.brand = localStorage.getItem('biV7_brand') || V7.brand;
       V7.sidebarCollapsed = localStorage.getItem('biV7_sbCollapsed') === '1';
       // FIX-LOGIN: not restoring loggedIn from storage – login always shows on fresh page load
@@ -10599,7 +10592,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     // Build lang dropdown
     const langMenu = $('#v7-lang-menu');
     if (langMenu) {
-      langMenu.innerHTML = ['pt','en','es','zh'].map(l => `
+      langMenu.innerHTML = ['pt','en'].map(l => `
         <button class="v7-lang-item ${l===V7.lang?'active':''}" data-lang="${l}">
           <span class="v7-lang-flag">${window.V7_FLAGS[l]}</span>
           <span>${((window.V7_I18N && (window.V7_I18N[V7.lang] || window.V7_I18N.pt)) || {})['lang-'+l] || l}</span>
@@ -10638,8 +10631,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     // Sidebar collapse state
     if (V7.sidebarCollapsed) $('.v7-shell')?.classList.add('collapsed');
 
-    // Apply lang
+    // Apply lang (shell and the briefing form share one language)
     applyShellLang();
+    if (V7.lang === 'en' && typeof window.setLang === 'function') { try { window.setLang('en'); } catch(_){} }
     const flagEl = $('#v7-lang-flag');
     if (flagEl) flagEl.innerHTML = window.V7_FLAGS[V7.lang];
     const labelEl = $('#v7-lang-label');
