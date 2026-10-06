@@ -3566,7 +3566,7 @@ body.v7-app {
 }
 .v7-sb-badge {
   background: color-mix(in oklch, var(--brand) 18%, transparent);
-  color: var(--brand);
+  color: var(--text-strong);
   font-family: var(--font-mono);
   font-size: .65rem;
   padding: 2px 6px;
@@ -4799,13 +4799,15 @@ html.v7-public-boot .v7-login { display:none !important; }
 .v7-ped-tab:hover { color:var(--text-strong); }
 .v7-ped-tab.active { color:var(--text-strong); border-bottom-color:var(--brand); }
 .v7-ped-tab-n { font:500 .68rem var(--font-mono); color:var(--muted); background:var(--surface-2); border-radius:100px; padding:.1rem .45rem; }
-.v7-ped-tab.active .v7-ped-tab-n { color:var(--brand); }
+.v7-ped-tab.active .v7-ped-tab-n { color:var(--text-strong); background:color-mix(in oklch, var(--brand) 18%, transparent); }
 .v7-table-row.v7-ped-row { grid-template-columns:minmax(0,2fr) 150px 130px auto; cursor:default; }
 .v7-table-row.v7-ped-row.is-open { cursor:pointer; }
+.v7-ped-open { appearance:none; background:none; border:0; padding:0; font:inherit; color:inherit; text-align:left; cursor:pointer; max-width:100%; display:block; }
+.v7-ped-open:hover { color:var(--brand); }
 .v7-ped-badge { font:500 .72rem var(--font-mono); padding:.25rem .6rem; border-radius:100px; border:var(--hairline); color:var(--muted); white-space:nowrap; }
 .v7-ped-acts { display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end; }
 .v7-ped-act { padding:.4rem .7rem; font-size:.78rem; }
-#v7-new-pedido-btn { white-space:nowrap; }
+#v7-new-pedido-btn, #pedido-detail-view .v7-screen-head .v7-btn { white-space:nowrap; }
 .v7-ped-card { padding:1.3rem 1.4rem; margin-bottom:1rem; }
 .v7-ped-score { display:flex; align-items:center; gap:1.4rem; }
 .v7-ped-score svg { width:72px; height:72px; flex:none; }
@@ -5095,18 +5097,18 @@ html.v7-public-boot .v7-login { display:none !important; }
       <section class="v6-hero" data-screen-label="Hero">
         <div class="v6-hero-grid">
           <div>
-            <div class="v6-eyebrow-row v6-reveal" data-i18n="v6-hero-eyebrow"><strong>BI Intake</strong> · Briefing inteligente</div>
+            <div class="v6-eyebrow-row v6-reveal" data-i18n="v6-hero-eyebrow"><strong>Briefing de BI</strong> · pedido de dashboard</div>
             <h1 class="v6-hero-title v6-reveal" data-delay="1">
               <span class="v6-line" data-i18n="v6-hero-title-1">Descreva o pedido</span>
               <span class="v6-line" data-i18n="v6-hero-title-2">antes do</span>
               <span class="v6-line"><em data-i18n="v6-hero-title-3">primeiro dashboard.</em></span>
             </h1>
-            <p class="v6-hero-sub v6-reveal" data-delay="2" data-i18n="v6-hero-sub">Um <strong>briefing inteligente</strong> para projetos de BI e Analytics. Pare de receber pedidos sem contexto, dashboards mal definidos e demandas que viram retrabalho.</p>
+            <p class="v6-hero-sub v6-reveal" data-delay="2" data-i18n="v6-hero-sub">Conte qual decisão o dashboard precisa apoiar, de onde vêm os dados e como você imagina o visual. No fim, você vê o <strong>score de prontidão</strong> e o wireframe, e envia o briefing para o analista.</p>
 
             <div class="v6-hero-meta v6-reveal" data-delay="3">
               <div class="v6-meta-item">
-                <span class="v6-meta-label" data-i18n="v6-meta-1-l">Tempo médio</span>
-                <span class="v6-meta-value" data-i18n="v6-meta-1-v">12 min</span>
+                <span class="v6-meta-label" data-i18n="v6-meta-1-l">Tempo estimado</span>
+                <span class="v6-meta-value" data-i18n="v6-meta-1-v">~12 min</span>
               </div>
               <div class="v6-meta-item">
                 <span class="v6-meta-label" data-i18n="v6-meta-2-l">Score gerado</span>
@@ -5126,7 +5128,7 @@ html.v7-public-boot .v7-login { display:none !important; }
           </div>
 
           <aside class="v6-hero-side v6-reveal" data-delay="3">
-            <div class="v6-hero-side-head" data-i18n="v6-side-head">Score · maturidade</div>
+            <div class="v6-hero-side-head" data-i18n="v6-side-head">No fim você recebe</div>
             <div class="v6-hero-side-row">
               <span data-i18n="v6-side-1-l">Score de prontidão</span>
               <strong data-i18n="v6-side-1-v">0 a 100</strong>
@@ -5275,7 +5277,7 @@ html.v7-public-boot .v7-login { display:none !important; }
 
         <div class="q-block">
           <label class="q-label" data-i18n="v6-f-area">Área responsável pelo pedido</label>
-          <div class="q-hint" data-i18n="v6-f-area-hint">Quem é o dono dessa demanda? Sem responsável claro, o BI vira órfão.</div>
+          <div class="q-hint" data-i18n="v6-f-area-hint">Qual área responde por esse pedido? Sem dono claro, o BI fica sem ninguém para cuidar dele.</div>
           <div class="chips" id="v6-chips-area">
             <div class="chip" data-key="ar-com" data-val-pt="Comercial / Vendas" data-val-en="Sales / Commercial">Comercial / Vendas</div>
             <div class="chip" data-key="ar-ops" data-val-pt="Operações" data-val-en="Operations">Operações</div>
@@ -5704,10 +5706,10 @@ Custo de perda..."></textarea>
           <section class="v6-ai-section">
             <div class="v6-section-head v6-reveal" style="margin-bottom:1.3rem">
               <div>
-                <div class="v6-section-eyebrow" data-i18n="v6-ai-eyebrow">Camada inteligente</div>
-                <h3 class="v6-section-title" data-i18n="v6-ai-title-section">A IA leu seu briefing.</h3>
+                <div class="v6-section-eyebrow" data-i18n="v6-ai-eyebrow">Leitura automática</div>
+                <h3 class="v6-section-title" data-i18n="v6-ai-title-section">O que o seu briefing já mostra.</h3>
               </div>
-              <p class="v6-section-sub" data-i18n="v6-ai-sub">4 saídas geradas automaticamente — para colar no Jira, alinhar com a área, ou desafiar premissas.</p>
+              <p class="v6-section-sub" data-i18n="v6-ai-sub">Quatro leituras montadas por regras a partir das suas respostas. Use para alinhar com a área ou rever o que ficou vago.</p>
             </div>
             <div class="v6-ai-grid" id="v6-ai-grid"></div>
           </section>
@@ -5719,7 +5721,7 @@ Custo de perda..."></textarea>
                 <div class="v6-section-eyebrow" data-i18n="v6-ba-eyebrow">Por que esse briefing importa</div>
                 <h3 class="v6-section-title" data-i18n="v6-ba-title">Antes vs Depois.</h3>
               </div>
-              <p class="v6-section-sub" data-i18n="v6-ba-sub">O que muda quando uma demanda chega bem estruturada.</p>
+              <p class="v6-section-sub" data-i18n="v6-ba-sub">O que muda quando o pedido chega bem descrito.</p>
             </div>
             <div class="v6-ba-grid">
               <div class="v6-ba-col before v6-reveal" data-delay="1">
@@ -10138,6 +10140,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   let pedidosChannel = null;
   let pedidosTab = null;          // 'sent' | 'answered' | 'delivered' | 'archived'
   let pedidoOpenId = null;        // id of the request whose detail is open
+  let pedidosLoadError = false;   // last load failed: show an error, never a false "no requests"
 
   const PEDIDO_TXT = {
     pt: {
@@ -10160,6 +10163,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       markDelivered: 'Marcar como entregue', updateLink: 'Atualizar link',
       pasteFirst: 'Cole um link antes de salvar.', saveFail: 'Falha ao salvar o link.', saved: 'Pedido marcado como entregue ✓',
       palette: 'Paleta',
+      loadFail: 'Não foi possível carregar os pedidos.', loadFailSub: 'Verifique a conexão e tente de novo.', retry: 'Tentar de novo',
     },
     en: {
       title: 'Requests', sub: 'Create a link and send it to the requester to describe the dashboard they need.',
@@ -10181,6 +10185,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       markDelivered: 'Mark as delivered', updateLink: 'Update link',
       pasteFirst: 'Paste a link before saving.', saveFail: 'Could not save the link.', saved: 'Request marked as delivered ✓',
       palette: 'Palette',
+      loadFail: 'Could not load requests.', loadFailSub: 'Check your connection and try again.', retry: 'Try again',
     },
   };
   function pt() { return PEDIDO_TXT[V7.lang] || PEDIDO_TXT.pt; }
@@ -10230,7 +10235,8 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       .eq('workspace_id', wsId)
       .order('created_at', { ascending: false })
       .limit(300);
-    PEDIDOS = error ? [] : (data || []).map(mapRequestRow);
+    pedidosLoadError = !!error;
+    if (!error) PEDIDOS = (data || []).map(mapRequestRow);
     updatePedidosBadge();
   }
 
@@ -10305,7 +10311,9 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       return `
       <div class="v7-table-row v7-ped-row${openable ? ' is-open' : ''}" ${openable ? `onclick="v7OpenPedido('${r.id}')"` : ''}>
         <div style="min-width:0;">
-          <div class="v7-table-title">${escapeXML(r.nomeDash || T.untitled)}</div>
+          ${openable
+            ? `<button type="button" class="v7-table-title v7-ped-open" onclick="event.stopPropagation(); v7OpenPedido('${r.id}')">${escapeXML(r.nomeDash || T.untitled)}</button>`
+            : `<div class="v7-table-title">${escapeXML(r.nomeDash || T.untitled)}</div>`}
           <div class="v7-table-id">${escapeXML(r.submitterName || T.noRequester)}${r.area ? ' · ' + escapeXML(r.area) : ''}</div>
         </div>
         <div>${openable && r.status !== 'archived' ? scoreChip(r.readinessScore || 0) : `<span class="v7-ped-badge">${T.status[r.status] || r.status}</span>`}</div>
@@ -10314,7 +10322,12 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       </div>`;
     }).join('');
 
-    const body = !PEDIDOS.length ? `
+    const body = pedidosLoadError && !PEDIDOS.length ? `
+        <div class="v7-card" style="padding:3rem 1.5rem;">
+          <div class="v7-empty">${V7_ICON.inbox}<h4>${T.loadFail}</h4><p>${T.loadFailSub}</p>
+            <button type="button" class="v7-btn v7-btn-secondary" style="margin-top:1rem" onclick="v7RenderPedidos()">${T.retry}</button></div>
+        </div>`
+      : !PEDIDOS.length ? `
         <div class="v7-card" style="padding:3rem 1.5rem;">
           <div class="v7-empty">${V7_ICON.inbox}<h4>${T.emptyAll}</h4><p>${T.emptyAllSub}</p></div>
         </div>`
@@ -10334,7 +10347,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         </div>
         <div><button type="button" class="v7-btn v7-btn-primary" id="v7-new-pedido-btn">${T.create}</button></div>
       </div>
-      <div class="v7-ped-tabs" role="tablist">${tabs}</div>
+      ${pedidosLoadError && !PEDIDOS.length ? '' : `<div class="v7-ped-tabs" role="tablist">${tabs}</div>`}
       ${body}`;
 
     $('#v7-new-pedido-btn')?.addEventListener('click', createPedido);
@@ -10362,8 +10375,10 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
   function pedidoLink(token) { return (window.v7PedidoLink ? window.v7PedidoLink(token) : token); }
 
   async function updatePedido(id, patch, okMsg, failMsg) {
+    const btn = document.activeElement && document.activeElement.closest ? document.activeElement.closest('button') : null;
+    if (btn) btn.disabled = true;
     const { error } = await window.sb.from('requests').update(patch).eq('id', id);
-    if (error) { toast(failMsg, 4000); return false; }
+    if (error) { toast(failMsg, 4000); if (btn) btn.disabled = false; return false; }
     await loadPedidos();
     if (pedidoOpenId) paintPedidoDetail(pedidoOpenId); else paintPedidosList();
     toast(okMsg, 2500);
@@ -10454,7 +10469,11 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     const paletteHtml = (r.paleta || []).map(c => `<span class="v7-ped-swatch" style="background:${escapeXML(c)}"></span>`).join('');
     const groupsHtml = RESP_GROUPS.map(g => {
       const rows = g.fields.filter(k => filled(r[k]))
-        .map(k => detailRow(L[k], escapeXML(String(r[k])).replace(/\n/g, '<br>')));
+        .map(k => {
+          let v = String(r[k]);
+          if (k === 'urgencia' && /^\d$/.test(v)) v += '/5';   // urgency is a 1–5 scale
+          return detailRow(L[k], escapeXML(v).replace(/\n/g, '<br>'));
+        });
       if (g.fields.includes('modoBI') && paletteHtml) rows.push(detailRow(T.palette, paletteHtml));
       if (!rows.length) return '';
       return `

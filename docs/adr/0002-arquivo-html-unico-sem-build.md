@@ -1,0 +1,3 @@
+# App em um único index.html, sem etapa de build, no GitHub Pages
+
+O app nasceu como protótipo em um único HTML e, ao ganhar login e banco (Supabase), foi mantido assim: o Supabase entra por CDN, não há bundler nem framework, e a hospedagem é o GitHub Pages, com `404.html` fazendo o roteamento de `/r/{token}`. A alternativa era migrar para React/Next com deploy próprio, o que exigiria reescrever o formulário inteiro; ficar no arquivo único reaproveitou o protótipo sem mudança e mantém o deploy em um `git push`. O custo é um arquivo grande, com CSS, JS e fontes embutidos, que precisa ser editado com cuidado.
