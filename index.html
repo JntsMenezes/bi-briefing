@@ -4842,6 +4842,7 @@ html.v7-public-boot .v7-login { display:none !important; }
 .v7-link-unavailable { padding: var(--shell-pad); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.4.16/purify.min.js" integrity="sha512-flQmhkXNRQ3iUfvtdCobtpMjCb6kE+zLnTiAulAQJ3WykVfy84JvCMOo6vhwWXHTXjR25h9Zj+LyGFRWKjRoag==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </head>
 <body>
@@ -10161,7 +10162,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       score: 'Score de prontidão', delivery: 'Entrega do dashboard', deliveryDone: 'Dashboard entregue',
       deliveryPh: 'Link do Power BI publicado', deliveryPhUpdate: 'Colar novo link pra atualizar',
       markDelivered: 'Marcar como entregue', updateLink: 'Atualizar link',
-      pasteFirst: 'Cole um link antes de salvar.', saveFail: 'Falha ao salvar o link.', saved: 'Pedido marcado como entregue ✓',
+      pasteFirst: 'Cole um link antes de salvar.', badUrl: 'O link precisa ser um endereço http(s).', saveFail: 'Falha ao salvar o link.', saved: 'Pedido marcado como entregue ✓',
       palette: 'Paleta',
       loadFail: 'Não foi possível carregar os pedidos.', loadFailSub: 'Verifique a conexão e tente de novo.', retry: 'Tentar de novo',
     },
@@ -10183,7 +10184,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
       score: 'Readiness score', delivery: 'Dashboard delivery', deliveryDone: 'Dashboard delivered',
       deliveryPh: 'Published Power BI link', deliveryPhUpdate: 'Paste a new link to update',
       markDelivered: 'Mark as delivered', updateLink: 'Update link',
-      pasteFirst: 'Paste a link before saving.', saveFail: 'Could not save the link.', saved: 'Request marked as delivered ✓',
+      pasteFirst: 'Paste a link before saving.', badUrl: 'The link must be an http(s) address.', saveFail: 'Could not save the link.', saved: 'Request marked as delivered ✓',
       palette: 'Palette',
       loadFail: 'Could not load requests.', loadFailSub: 'Check your connection and try again.', retry: 'Try again',
     },
@@ -10526,21 +10527,31 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
         </div>
         ${timeline}
         <div class="v7-card v7-ped-card v7-ped-score">
-          ${r.readinessSvg || ''}
+          ${safeSvg(r.readinessSvg)}
           <div><div class="v7-ped-group-title">${T.score}</div><strong>${r.readinessScore || 0}/100</strong> · ${escapeXML(r.effortLabel || '—')} · ${escapeXML(r.usageLabel || '—')}</div>
         </div>
         ${deliveryCard}
-        ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${r.wireframeSvg}</div>` : ''}
+        ${r.wireframeSvg ? `<div class="v7-card" style="padding:0; overflow:hidden; margin-bottom:1rem;">${safeSvg(r.wireframeSvg)}</div>` : ''}
         ${groupsHtml}
       </div>`;
+  }
+
+  // The SVGs come from the public form, so anyone holding a link controls them.
+  // Sanitize before injecting; if DOMPurify didn't load, show nothing rather than raw markup.
+  function safeSvg(svg) {
+    if (!svg || !window.DOMPurify) return '';
+    return DOMPurify.sanitize(String(svg), { USE_PROFILES: { svg: true, svgFilters: true } });
   }
 
   window.v7SaveDelivery = async function(reqId) {
     const T = pt();
     const input = $('#deliveryUrlInput');
     const btn = $('#deliverySaveBtn');
-    const url = (input?.value || '').trim();
+    let url = (input?.value || '').trim();
     if (!url) { toast(T.pasteFirst); return; }
+    // Links pasted without a scheme get https://; anything else (javascript:, data:) is refused.
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) url = 'https://' + url;
+    if (!/^https?:\/\//i.test(url)) { toast(T.badUrl); return; }
     if (btn) btn.disabled = true;
     const ok = await updatePedido(reqId, { dashboard_url: url, status: 'delivered', delivered_at: new Date().toISOString() }, T.saved, T.saveFail);
     if (!ok && btn) btn.disabled = false;
@@ -10876,6 +10887,7 @@ window.v6RenderAIConceptual = v6RenderAIConceptual;
     if (/user already registered/i.test(m)) return 'Esse e-mail já tem conta. Tente entrar.';
     if (/password should be at least/i.test(m)) return 'A senha precisa ter pelo menos 6 caracteres.';
     if (/email not confirmed/i.test(m)) return 'Confirme seu e-mail antes de entrar.';
+    if (/signups? not allowed|signup is disabled/i.test(m)) return 'Cadastro fechado. Peça acesso ao administrador.';
     return m || 'Não foi possível autenticar.';
   }
 
